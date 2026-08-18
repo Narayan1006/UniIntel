@@ -45,6 +45,7 @@ STAGE_LABELS = [
     "Initialising…",
     "Ingesting & cleaning data…",
     "Resolving brand names…",
+    "Looking up distributor source URLs…",
     "AI taxonomy classification…",
     "Extracting product attributes…",
     "Generating 5-format descriptions…",

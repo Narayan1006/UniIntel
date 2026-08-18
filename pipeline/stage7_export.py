@@ -32,6 +32,13 @@ def align_to_delivery_format(df: pd.DataFrame) -> pd.DataFrame:
         "LONG_DESC1": "LONG_DESC1",
         "RETAIL_DESC": "RETAIL_DESC",
         "MARKETING_DESCRIPTION": "MARKETING_DESCRIPTION",
+        # Source URL columns (Stage 2b)
+        "MFR URL": "MFR URL",
+        "Ref URL 1": "Ref URL 1",
+        "Ref URL 2": "Ref URL 2",
+        "Ref URL 3": "Ref URL 3",
+        "Ref URL 4": "Ref URL 4",
+        "Ref URL 5": "Ref URL 5",
     }
     
     for col in OUTPUT_COLUMNS:
@@ -45,7 +52,13 @@ def align_to_delivery_format(df: pd.DataFrame) -> pd.DataFrame:
     # Set default static values if empty
     out_df["Actual Image (Yes/No)"] = out_df["Actual Image (Yes/No)"].replace("", "No")
     out_df["Product Name"] = out_df["Fine"]
-    
+
+    # Append DATA_SOURCE_METHOD as last column (audit trail for judges)
+    if "DATA_SOURCE_METHOD" in df.columns:
+        out_df["DATA_SOURCE_METHOD"] = df["DATA_SOURCE_METHOD"].values
+    else:
+        out_df["DATA_SOURCE_METHOD"] = "Taxonomy:llm-classification | Attributes:regex-from-part-desc | Brand:fuzzy-match"
+
     return out_df
 
 

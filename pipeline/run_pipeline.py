@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from stage1_ingest import load_and_clean
 from stage2_brand_resolve import resolve_all_brands
+from stage2b_source_lookup import lookup_all_source_urls
 from stage3_classify import classify_all
 from stage4_attributes import extract_all_attributes
 from stage5_describe import generate_descriptions
@@ -25,7 +26,7 @@ from config import INPUT_CSV
 
 def run_pipeline(input_csv=None, on_stage=None):
     """
-    Run all 7 pipeline stages.
+    Run all 8 pipeline stages (including Stage 2b: Source URL Lookup).
     Args:
         input_csv: Path to input CSV (uses default if None)
         on_stage:  Optional callback(stage_num: int) called at each stage start
@@ -50,6 +51,10 @@ def run_pipeline(input_csv=None, on_stage=None):
     _stage(2)
     print("\n-> [2/7] Resolving Manufacturers & Brand Names...")
     df = resolve_all_brands(df)
+
+    _stage(2)
+    print("\n-> [2b/7] Looking up Product Source URLs (Distributor Verification)...")
+    df = lookup_all_source_urls(df)
 
     _stage(3)
     print("\n-> [3/7] Classifying Taxonomy (Dept > Class > Fine)...")
