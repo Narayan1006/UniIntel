@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: unintel-api
+    env: python
+    region: singapore
+    plan: free
+    rootDir: pipeline
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_TEXT_MODEL_NAME
+        value: qwen/qwen3.6-27b
+      - key: GROQ_FALLBACK_MODEL_NAME
+        value: openai/gpt-oss-20b
+    disk:
+      name: pipeline-output
+      mountPath: /opt/render/project/src/output
+      sizeGB: 1
