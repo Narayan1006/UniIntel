@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-const ENRICHMENT_API = (import.meta.env.VITE_API_URL || 'http://localhost:8082') + '/api/v1/enrichment';
+const ENRICHMENT_API = (import.meta.env.VITE_API_URL || 'https://uniintelunintel-api.onrender.com') + '/api/v1/enrichment';
 
 // ─── Tiny icon components ────────────────────────────────────────────────────
 const Icon = ({ d, size = 16, stroke = 'currentColor', fill = 'none' }) => (
