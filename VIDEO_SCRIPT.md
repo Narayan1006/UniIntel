@@ -18,7 +18,7 @@
 
 > *"Hi everyone! I’m Narayan Singh presenting **UniIntel** for UniHack 2026.*
 >
-> *(0:00-0:15) Distributors receive raw product files with only 6 basic columns. Unilog’s delivery standard requires **252 structured columns** — including taxonomy, spec pairs, 5 description formats, and source verification URLs. UniIntel automates this entire transformation using an 8-stage AI engine.*
+> *(0:00-0:15) Distributors receive raw product files with only 6 basic columns. Unilog’s delivery standard requires **252 structured columns** — including taxonomy, spec pairs, 5 description formats, and source verification URLs. UniIntel automates this entire transformation in under 5 minutes using an 8-stage AI engine.*
 >
 > *(0:15-0:35) On our live web app, we drag and drop a raw catalog CSV and click **Start Enrichment Pipeline**. In real-time, UniIntel cleans data, resolves brand names, extracts attributes, and classifies taxonomy using **Groq Qwen 27B LLM**. Our **Smart LLM Clustering** groups 1,000 items into 50 product types — saving 95% in API cost and latency.*
 >
