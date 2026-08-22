@@ -10,14 +10,28 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / ".env")
 
 # ── Workspace root ──────────────────────────────────────────────────────────
-ROOT = Path(__file__).parent.parent
+# On Render: rootDir=pipeline, so __file__ parent IS the root
+# Locally:   __file__ is pipeline/config.py, parent.parent is project root
+_HERE = Path(__file__).parent          # always: the pipeline/ directory
+_IS_RENDER = os.getenv("RENDER", "")   # Render sets this automatically
+
+if _IS_RENDER:
+    ROOT       = _HERE                  # pipeline/ IS the working dir on Render
+    OUTPUT_DIR = _HERE / "output"
+else:
+    ROOT       = _HERE.parent           # local: project root is one level up
+    OUTPUT_DIR = ROOT / "pipeline" / "output"
 
 # ── Input / Output files ────────────────────────────────────────────────────
-INPUT_CSV  = ROOT / "Unihack_ Sample Dataset - Input.csv"
-GT_CSV     = ROOT / "Unihack_ Expected Output - Delivery Format.csv"
-OUTPUT_DIR = ROOT / "pipeline" / "output"
-OUTPUT_CSV = OUTPUT_DIR / "enriched_output.csv"
-REVIEW_CSV = OUTPUT_DIR / "review_queue.csv"
+if _IS_RENDER:
+    INPUT_CSV    = _HERE / "sample_input.csv"      # uploaded via API on Render
+    GT_CSV       = _HERE / "sample_gt.csv"
+else:
+    INPUT_CSV    = ROOT / "Unihack_ Sample Dataset - Input.csv"
+    GT_CSV       = ROOT / "Unihack_ Expected Output - Delivery Format.csv"
+
+OUTPUT_CSV   = OUTPUT_DIR / "enriched_output.csv"
+REVIEW_CSV   = OUTPUT_DIR / "review_queue.csv"
 METRICS_JSON = OUTPUT_DIR / "metrics.json"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

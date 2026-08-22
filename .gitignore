@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 pipeline/.env
 pipeline/output/
+pipeline/output/source_url_cache.json
+!pipeline/sample_input.csv
 
 # Node
 node_modules/
