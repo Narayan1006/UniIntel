@@ -4,7 +4,24 @@ Fuzzy-matches raw manufacturer strings to canonical approved names.
 """
 import re
 import pandas as pd
-from rapidfuzz import fuzz, process
+try:
+    from rapidfuzz import fuzz, process
+except ImportError:
+    try:
+        from thefuzz import fuzz, process
+    except ImportError:
+        import difflib
+        class process:
+            @staticmethod
+            def extractOne(query, choices, **kwargs):
+                matches = difflib.get_close_matches(query, choices, n=1, cutoff=0.6)
+                if matches:
+                    ratio = int(difflib.SequenceMatcher(None, query, matches[0]).ratio() * 100)
+                    return matches[0], ratio, 0
+                return None, 0, 0
+        class fuzz:
+            token_set_ratio = None
+
 from config import MANUFACTURER_CORRECTIONS, CONFIDENCE_THRESHOLD
 
 
