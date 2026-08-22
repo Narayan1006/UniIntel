@@ -10,6 +10,8 @@ services:
     envVars:
       - key: GROQ_API_KEY
         sync: false
+              - key: PYTHON_VERSION
+                      value: 3.11.9
       - key: GROQ_TEXT_MODEL_NAME
         value: qwen/qwen3.6-27b
       - key: GROQ_FALLBACK_MODEL_NAME
