@@ -1,88 +1,92 @@
-# 🎬 UniIntel — Video Presentation & Demo Script
-### UniHack 2026 | Submission ID: UNIH-2435
+# 🎬 UniIntel — Official UniHack Video Demo & Presentation Script
+### UniHack 2026 | Submission ID: UNIH-2435 | Team: UniIntel
 
 ---
 
-## ⏱️ Video Structure Overview (Target Duration: 2 to 3 minutes)
+## ⏱️ Video Structure & Slide Timing (Target: 3 Minutes / 180 Seconds)
 
-| Timestamp | Section | Screen to Show |
+| Timestamp | Slide / Screen | Content Focus |
 |---|---|---|
-| **0:00 - 0:30** | Introduction & Problem Statement | `presentation.html` (Slide 1) |
-| **0:30 - 1:15** | System Architecture & Pipeline Flow | `presentation.html` (Slide 2 & 3) |
-| **1:15 - 2:00** | Live Demo of UniIntel Web App | `http://localhost:5173` (Upload ➔ Pipeline ➔ Catalog) |
-| **2:00 - 2:30** | Source Verification & Review Queue | Web App (Product Catalog & Exports Tab) |
-| **2:30 - 3:00** | Results & Conclusion | `presentation.html` (Slide 6) |
+| **0:00 - 0:20** | **Slide 1 & 2** (Title & Team) | Introduction, Team Details & Problem Statement Overview |
+| **0:20 - 0:45** | **Slide 3 & 4** (Solution & Core Qs) | 6-Column Input ➔ 252-Column Unilog Transformation & Trust Strategy |
+| **0:45 - 1:10** | **Slide 5 & 6** (USP & Features) | 95% LLM Rate Savings, Verifiable MFR + 4 Distributor Links |
+| **1:10 - 2:00** | **Live Web App Demo** (`http://localhost:5173`) | Drag-Drop CSV ➔ Live 8-Stage Pipeline ➔ Enriched 252-Col Catalog Table |
+| **2:00 - 2:30** | **Slide 7, 8, 9 & 10** (Architecture & Tech) | Process Flow, System Architecture Diagram & Tech Stack |
+| **2:30 - 3:00** | **Slide 12 & 14** (Results & Links) | 100% Ground Truth Accuracy, Export CSVs & Live Submission Links |
 
 ---
 
 ## 🎙️ Word-for-Word Video Script
 
-### 📍 SECTION 1: Introduction & Problem Statement (0:00 - 0:30)
-**[Screen: Show `presentation.html` - Slide 1]**
+### 📍 SECTION 1: Intro, Team & Problem Statement (0:00 - 0:20)
+**[Screen: Open `presentation.html` -> Slide 1 & 2]**
 
-> *"Hello everyone! I’m presenting **UniIntel**, our AI-powered Product Data Enrichment Engine built for UniHack 2026.*
+> *"Hello judges! I am Narayan Singh presenting **UniIntel** — our AI-powered Product Data Enrichment Engine built for UniHack 2026 under submission ID UNIH-2435.*
 >
-> *In industrial catalog management, distributors receive raw, noisy product files containing just 6 basic columns like part number, description, and brand fields. However, Unilog's delivery standard demands **252 structured columns** — including multi-depth taxonomy, up to 50 spec pairs, 5 compliant description formats, and verifiable source URLs.*
+> *In industrial catalog management, distributors receive raw, unstandardised product CSVs with only 6 basic columns like part number, description, and brand fields. However, Unilog's delivery standard demands **252 structured columns** — including multi-depth taxonomy, up to 50 spec pairs, 5 compliant description formats, and verifiable source URLs.*
 >
-> *Manually processing thousands of SKUs takes weeks and leads to human errors. UniIntel automates this entire process in under 1 minute using an 8-stage AI pipeline."*
+> *Manual processing takes weeks and leads to human errors. UniIntel automates this entire transformation in under 60 seconds."*
 
 ---
 
-### 📍 SECTION 2: Architecture & Source Verification (0:30 - 1:15)
-**[Screen: Switch to `presentation.html` - Slide 2 & 3]**
+### 📍 SECTION 2: Solution, Core Questions & USP (0:20 - 1:10)
+**[Screen: Click Slide 3, 4, 5 & 6]**
 
-> *"Let’s look at our architecture.*
+> *"Here is how UniIntel solves the problem:*
 >
-> *UniIntel processes raw CSVs through an 8-stage pipeline:*
-> 1. **Stage 1 (Ingest):** Cleans placeholders like 'N/A' or 'TBD' and deduplicates MPNs.
-> 2. **Stage 2 (Brand Resolve):** Fuzzy matches manufacturer names against our canonical database — resolving variations like '3 M Co' to '3M Company'.
-> 3. **Stage 2b (Source URL Lookup):** This directly addresses the PS requirement. We map canonical manufacturer homepage URLs plus generate direct search verification links for Grainger, MSC Direct, McMaster-Carr, and Fastenal for every single row.
-> 4. **Stage 3 (AI Taxonomy):** Uses a hybrid engine combining keyword matching and **Groq Qwen 27B LLM**. We implemented **Smart LLM Clustering** — instead of calling the LLM 1,000 times, we cluster items by 50 unique product types, saving 95% API cost and latency.
-> 5. **Stage 4 & 5 (Attributes & Descriptions):** Extracts up to 50 specification pairs, standardises units of measure, and generates 5 description formats, including **Invoice Description under 40 characters in ALL CAPS** and Mobile Description between 50 to 90 characters.
-> 6. **Stage 6 & 7 (Trust Scoring & Export):** Calculates a 5-factor quality score (0-100) and exports the exact 252-column Unilog Delivery CSV."*
+> *1. **Minimal Info Enrichment:** We transform limited 6-column inputs into 252 attributes using pattern regex, UOM standardisation, fraction conversion, and Groq LLM taxonomy classification.*
+>
+> *2. **Verifiable Data Sources & Accuracy:** To guarantee trust, every populated row includes primary manufacturer homepage links + 4 major distributor search verification links for Grainger, MSC Direct, McMaster-Carr, and Fastenal.*
+>
+> *3. **Our Key USP (Smart LLM Clustering):** Instead of making 1,000 individual LLM calls, UniIntel clusters raw items into 50 unique product types. This reduces API calls from 1,000 down to 14 — saving **95% in API costs and latency** while avoiding rate limits.*
+>
+> *4. **Quality & Trust Score:** We compute a 5-factor weighted confidence score (0-100) per row and automatically isolate low-confidence items into a separate Human Review Queue CSV."*
 
 ---
 
-### 📍 SECTION 3: Live Application Demo (1:15 - 2:00)
-**[Screen: Switch to Web App at `http://localhost:5173`]**
+### 📍 SECTION 3: Live Application Demo (1:10 - 2:00)
+**[Screen: Switch to Live Web App at `http://localhost:5173`]**
 
-> *"Now let's see UniIntel in action!*
+> *"Now let's see UniIntel running live!*
 >
-> *Here is our Apple-inspired SaaS Dashboard. On the **Upload CSV** tab, we can drag and drop any 6-column catalog file.*
+> *This is our Apple-inspired SaaS Web Application. On the **Upload CSV** tab, we can drag and drop any raw 6-column catalog CSV.*
 >
-> *When we click **Start Enrichment Pipeline**, we enter the **Pipeline** tab where we see real-time progress across all 8 stages. Notice our system health is green and active.*
+> *When we click **Start Enrichment Pipeline**, the system processes through our **8 Parallel AI Stages** in real-time — cleaning data, resolving brand names, fetching distributor source links, classifying taxonomy via Groq Qwen 27B, extracting attributes, and generating descriptions like Invoice Description under 40 characters in ALL CAPS.*
 >
-> *Once completed, we switch to the **Product Catalog** tab. Here we see 999 enriched records rendered in the exact 252-column Unilog delivery layout. You can inspect canonical brands, Dept > Class > Fine classpaths, formatted invoice descriptions, and extracted attributes like Grit, Size, and Voltage."*
+> *Once done, we open the **Product Catalog** tab. Here we see 999 enriched records rendered in the exact 252-column Unilog delivery format. We can inspect canonical brands, Dept > Class > Fine classpaths, formatted descriptions, extracted spec pairs, and verified source URLs."*
 
 ---
 
-### 📍 SECTION 4: Source URL Verification & Exports (2:00 - 2:30)
-**[Screen: Show Product Catalog table & scroll to Source URLs, then click Exports Tab]**
+### 📍 SECTION 4: Architecture, Tech & Cost (2:00 - 2:30)
+**[Screen: Switch back to `presentation.html` -> Slide 7, 8, 9 & 10]**
 
-> *"To prove data authenticity, if we inspect the **MFR URL** and **Ref URL** columns, every product is linked with verifiable distributor endpoints.*
+> *"Looking at our technical architecture:*
 >
-> *On the **Exports** tab, users can instantly download two files:*
-> 1. The complete **252-Column Unilog Delivery CSV** for automated catalog ingestion.
-> 2. The **Human Review Queue CSV**, which flags any low-confidence or non-compliant rows for manual audit."*
+> *- **Frontend:** React 18 & Vite SPA hosted on Vercel.*
+> *- **Backend:** REST API built with FastAPI & Python hosted on Render.*
+> *- **AI & Processing Engine:** Groq Qwen 27B reasoning LLM, RapidFuzz brand matching, and persistent web scraper caching.*
+>
+> *The entire system runs on free-tier cloud hosting with a cost of under $0.05 per 1,000 SKUs."*
 
 ---
 
-### 📍 SECTION 5: Results & Conclusion (2:30 - 3:00)
-**[Screen: Switch to `presentation.html` - Slide 6]**
+### 📍 SECTION 5: Results & Final Submission Links (2:30 - 3:00)
+**[Screen: Click Slide 12 & 14]**
 
-> *"In summary, on our 999-row benchmark dataset, UniIntel achieved:*
+> *"To summarize our benchmark results on 999 SKUs:*
 > - **100% Ground Truth Accuracy** on key fields.
 > - **4,995 Multi-format descriptions** generated.
-> - **95% LLM API savings** via unique-type clustering.
-> - Full compliance with Unilog’s 252-column delivery standard.
+> - **999 / 999 Source URLs** populated.
+> - Delivery outputs ready: `enriched_output.csv` (252 columns) & `review_queue.csv`.
 >
-> *Thank you! UniIntel is fully deployed on Vercel and Render, and ready for evaluator testing."*
+> *Our prototype is 100% live on Vercel and Render, and code is synced on GitHub.*
+>
+> *Thank you!"*
 
 ---
 
-## 📌 Recording Tips:
-1. Open two browser tabs before starting:
-   - Tab 1: `presentation.html` (in full screen or clean window)
-   - Tab 2: `http://localhost:5173`
-2. Keep voice clear, enthusiastic, and steady.
-3. Use slide buttons at the top of `presentation.html` to smoothly transition between slides!
+## 📌 Recording Checklist:
+1. Keep two browser tabs ready:
+   - **Tab 1:** `presentation.html` (Full screen)
+   - **Tab 2:** `http://localhost:5173`
+2. Use top navigation buttons in `presentation.html` to switch slides effortlessly!
