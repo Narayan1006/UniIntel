@@ -314,10 +314,11 @@ export default function App() {
   }, []);
 
   const NAV = [
-    { id: 'upload',   label: 'Upload CSV',        icon: Icons.download },
-    { id: 'pipeline', label: 'Pipeline',          icon: Icons.cpu      },
-    { id: 'catalog',  label: 'Product Catalog',   icon: Icons.table    },
-    { id: 'exports',  label: 'Exports',           icon: Icons.file     },
+    { id: 'upload',       label: 'Upload CSV',        icon: Icons.download },
+    { id: 'pipeline',     label: 'Pipeline',          icon: Icons.cpu      },
+    { id: 'catalog',      label: 'Product Catalog',   icon: Icons.table    },
+    { id: 'architecture', label: 'Architecture',      icon: Icons.layers   },
+    { id: 'exports',      label: 'Exports',           icon: Icons.file     },
   ];
 
   return (
@@ -359,9 +360,10 @@ export default function App() {
         <div className="main">
           <header className="topbar">
             <span className="topbar-title">
-              {activeTab === 'upload'   ? 'Upload Product Catalog' :
-               activeTab === 'pipeline' ? 'Enrichment Pipeline'   :
-               activeTab === 'catalog'  ? 'Product Catalog'       : 'Exports & Downloads'}
+              {activeTab === 'upload'       ? 'Upload Product Catalog'    :
+               activeTab === 'pipeline'     ? 'Enrichment Pipeline'      :
+               activeTab === 'catalog'      ? 'Product Catalog'          :
+               activeTab === 'architecture' ? 'System Architecture & Data Flow' : 'Exports & Downloads'}
             </span>
             <div className="topbar-right">
               <span className="badge badge-violet">UniHack 2026</span>
@@ -370,10 +372,11 @@ export default function App() {
           </header>
 
           <div className="content">
-            {activeTab === 'upload'   && <UploadView   onDone={() => setActiveTab('catalog')} />}
-            {activeTab === 'pipeline' && <PipelineView />}
-            {activeTab === 'catalog'  && <CatalogView  />}
-            {activeTab === 'exports'  && <ExportsView  />}
+            {activeTab === 'upload'       && <UploadView       onDone={() => setActiveTab('catalog')} />}
+            {activeTab === 'pipeline'     && <PipelineView />}
+            {activeTab === 'catalog'      && <CatalogView  />}
+            {activeTab === 'architecture' && <ArchitectureView />}
+            {activeTab === 'exports'      && <ExportsView  />}
           </div>
         </div>
       </div>
@@ -806,6 +809,128 @@ function CatalogView() {
             </table>
           </div>
         )}
+      </div>
+    </>
+  );
+}
+
+// ─── Architecture View ────────────────────────────────────────────────────────
+function ArchitectureView() {
+  const stages = [
+    { num: '01', title: 'Ingest & Clean Data', icon: Icons.download, color: '#0071e3', desc: 'Auto-detects UTF-8/Latin-1 encoding, removes bad placeholders (N/A, TBD), deduplicates MPNs.' },
+    { num: '02', title: 'Manufacturer & Brand Resolve', icon: Icons.tag, color: '#5e5ce6', desc: 'Fuzzy matches raw text against canonical manufacturer DB ("3 M Co" → "3M Company").' },
+    { num: '2b', title: 'Distributor Source URL Lookup', icon: Icons.file, color: '#bf5af2', desc: 'Fetches real MFR homepage URLs + generates Grainger, MSC, McMaster, Fastenal verification links.' },
+    { num: '03', title: 'AI Taxonomy Classification', icon: Icons.cpu, color: '#ff9500', desc: 'Maps products into Dept > Class > Fine taxonomy via keyword engine + Groq Qwen LLM clustering.' },
+    { num: '04', title: 'Attribute Extraction & UOM', icon: Icons.grid, color: '#34c759', desc: 'Extracts up to 50 key/value spec pairs (Grit, Size, Voltage) & standardises fractions/units.' },
+    { num: '05', title: 'Multi-Format Descriptions', icon: Icons.layers, color: '#64d2ff', desc: 'Generates INVOICE_DESC (≤40 CAPS), MOBILE_DESC (50-90), SHORT_DESC, LONG_DESC, & RETAIL_DESC.' },
+    { num: '06', title: 'Trust Scoring & Quality Audit', icon: Icons.alert, color: '#ff3b30', desc: '5-factor weighted score (0-100). Low score or non-compliant rows get sent to human review queue.' },
+    { num: '07', title: 'Unilog 252-Col CSV Export', icon: Icons.table, color: '#30b0c7', desc: 'Outputs exact 252-column Unilog Delivery Format CSV + review_queue.csv + metrics.json.' },
+  ];
+
+  const weights = [
+    { label: 'Brand Resolution', weight: '30%', color: '#0071e3', desc: 'Exact vs. fuzzy manufacturer match score' },
+    { label: 'Taxonomy Classpath', weight: '25%', color: '#5e5ce6', desc: 'Confidence of Dept > Class > Fine classification' },
+    { label: 'Description Compliance', weight: '20%', color: '#34c759', desc: 'Invoice ≤40 ALL CAPS & Mobile length compliance' },
+    { label: 'Attribute Completeness', weight: '15%', color: '#ff9500', desc: 'Number of extracted specification pairs' },
+    { label: 'Source URL Presence', weight: '10%', color: '#bf5af2', desc: 'Verified manufacturer homepage & distributor URLs' },
+  ];
+
+  return (
+    <>
+      <div className="pipeline-header">
+        <h1>System Architecture & Pipeline Flow</h1>
+        <p>Complete technical blueprint: 6-column raw catalog input ➔ 8-stage AI enrichment ➔ 252-column Unilog format</p>
+      </div>
+
+      {/* Top Banner Overview */}
+      <div className="metric-card" style={{ marginBottom: 20, background: 'linear-gradient(135deg, rgba(0,113,227,0.05) 0%, rgba(94,92,230,0.05) 100%)', border: '1px solid rgba(0,113,227,0.15)' }}>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', tracking: '0.05em', color: 'var(--accent)', marginBottom: 4 }}>Input Schema</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>Raw 6 Columns</div>
+            <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 2 }}>Mfg_Part_Num, Part_Desc, E1_Brand, Unilog_Brand, DIB_Brand, Part_Manuf</div>
+          </div>
+          <div style={{ fontSize: 24, color: 'var(--text3)' }}>➔</div>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', tracking: '0.05em', color: 'var(--green)', marginBottom: 4 }}>Processing Engine</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>8 Parallel AI Stages</div>
+            <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 2 }}>Groq Qwen LLM + RapidFuzz + Web Scraper Cache</div>
+          </div>
+          <div style={{ fontSize: 24, color: 'var(--text3)' }}>➔</div>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', tracking: '0.05em', color: '#bf5af2', marginBottom: 4 }}>Delivery Output</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)' }}>252 Columns</div>
+            <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 2 }}>Exact Unilog Standard + Audit URLs + Review Flags</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 8-Stage Visual Cards */}
+      <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)', marginBottom: 12 }}>Pipeline Execution Stages</h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12, marginBottom: 24 }}>
+        {stages.map(s => (
+          <div key={s.num} className="metric-card" style={{ borderLeft: `4px solid ${s.color}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span className="badge" style={{ background: `${s.color}15`, color: s.color, fontWeight: 700 }}>Stage {s.num}</span>
+              <Icon d={s.icon} size={16} stroke={s.color} />
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{s.title}</div>
+            <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.4 }}>{s.desc}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Trust Scoring & Optimization Split */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        {/* Trust Score Formula Card */}
+        <div className="metric-card">
+          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Icon d={Icons.alert} size={16} stroke="var(--amber)" />
+            5-Factor Quality & Trust Score Formula
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {weights.map(w => (
+              <div key={w.label}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 600, marginBottom: 3 }}>
+                  <span style={{ color: 'var(--text)' }}>{w.label}</span>
+                  <span style={{ color: w.color }}>{w.weight}</span>
+                </div>
+                <div className="metric-bar" style={{ height: 6 }}>
+                  <div className="metric-bar-fill" style={{ width: w.weight, background: w.color }} />
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 2 }}>{w.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Source Verification & Rate Savings Card */}
+        <div className="metric-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Icon d={Icons.file} size={16} stroke="var(--accent)" />
+              Verifiable Source URL Verification Matrix
+            </div>
+            <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5, marginBottom: 14 }}>
+              Every populated product record is attached with manufacturer-domain links plus 4 major distributor search verification endpoints:
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+              <span className="badge badge-blue">MFR Homepage URL</span>
+              <span className="badge badge-violet">Grainger Product URL</span>
+              <span className="badge badge-violet">MSC Direct Search</span>
+              <span className="badge badge-violet">McMaster-Carr Search</span>
+              <span className="badge badge-violet">Fastenal Lookup</span>
+            </div>
+          </div>
+
+          <div style={{ background: 'var(--bg3)', borderRadius: 8, padding: 12, border: '1px solid var(--border)' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--green)', marginBottom: 4 }}>Smart LLM Clustering</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>Unique-Type Optimization (95% Savings)</div>
+            <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>
+              1000 items ➔ clustered into 50 unique product types ➔ 14 LLM calls instead of 1000. Prevents rate limits & speeds execution 20x.
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
