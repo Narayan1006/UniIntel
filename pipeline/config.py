@@ -24,8 +24,8 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── Groq API ─────────────────────────────────────────────────────────────────
 GROQ_API_KEY   = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL     = os.getenv("GROQ_TEXT_MODEL_NAME", "llama-3.3-70b-versatile")
-GROQ_FALLBACK  = os.getenv("GROQ_FALLBACK_MODEL_NAME", "llama-3.1-8b-instant")
+GROQ_MODEL     = os.getenv("GROQ_TEXT_MODEL_NAME", "qwen/qwen3.6-27b")
+GROQ_FALLBACK  = os.getenv("GROQ_FALLBACK_MODEL_NAME", "openai/gpt-oss-20b")
 
 # ── Pipeline behaviour ───────────────────────────────────────────────────────
 BATCH_SIZE            = 20    # rows per Groq call

@@ -293,11 +293,12 @@ const css = `
 const STAGES = [
   { num: 1, name: 'Ingest & Clean'       },
   { num: 2, name: 'Brand Resolve'        },
-  { num: 3, name: 'AI Classify'          },
-  { num: 4, name: 'Attr Extract'         },
-  { num: 5, name: 'Descriptions'         },
-  { num: 6, name: 'Trust Score'          },
-  { num: 7, name: 'Export CSV'           },
+  { num: 3, name: 'Source URLs'          },
+  { num: 4, name: 'AI Classify'          },
+  { num: 5, name: 'Attr Extract'         },
+  { num: 6, name: 'Descriptions'         },
+  { num: 7, name: 'Trust Score'          },
+  { num: 8, name: 'Export CSV'           },
 ];
 
 // ─── Main App ────────────────────────────────────────────────────────────────
@@ -394,8 +395,9 @@ function UploadView({ onDone }) {
 
   const STAGE_LABELS = [
     '', 'Ingesting & cleaning…', 'Resolving brand names…',
-    'AI taxonomy classification…', 'Extracting attributes…',
-    'Generating descriptions…', 'Computing trust scores…', 'Exporting CSV…',
+    'Looking up distributor source URLs…', 'AI taxonomy classification…',
+    'Extracting attributes…', 'Generating descriptions…',
+    'Computing trust scores…', 'Exporting CSV…',
   ];
 
   const startPolling = () => {
@@ -446,7 +448,7 @@ function UploadView({ onDone }) {
 
   const reset = () => { setFile(null); setStatus('idle'); setStageNum(0); setError(''); setRows(0); };
 
-  const pct = status === 'done' ? 100 : Math.round((stageNum / 7) * 100);
+  const pct = status === 'done' ? 100 : Math.round((stageNum / 8) * 100);
 
   return (
     <>
@@ -594,7 +596,7 @@ function UploadView({ onDone }) {
 function PipelineView() {
   const [metrics,  setMetrics]  = useState(null);
   const [running,  setRunning]  = useState(false);
-  const [doneStage, setDone]    = useState(7);
+  const [doneStage, setDone]    = useState(8);
 
   useEffect(() => {
     fetch(`${ENRICHMENT_API}/status`)
@@ -613,7 +615,7 @@ function PipelineView() {
   const runPipeline = async () => {
     setRunning(true);
     setDone(0);
-    const interval = setInterval(() => setDone(p => { if (p >= 7) { clearInterval(interval); return 7; } return p + 1; }), 700);
+    const interval = setInterval(() => setDone(p => { if (p >= 8) { clearInterval(interval); return 8; } return p + 1; }), 700);
     try { await fetch(`${ENRICHMENT_API}/run`, { method: 'POST' }); }
     catch(e) {}
     setTimeout(() => {
@@ -632,7 +634,7 @@ function PipelineView() {
       {running && (
         <div className="run-banner">
           <div className="spin" style={{width:14,height:14,borderWidth:2}} />
-          AI pipeline is running — Groq llama-3.3-70b classifying product taxonomy…
+          AI pipeline is running — Groq qwen3.6-27b classifying product taxonomy…
         </div>
       )}
 

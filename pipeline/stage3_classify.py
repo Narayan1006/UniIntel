@@ -98,6 +98,9 @@ def _smart_llm_classify(unclassified_rows: list) -> dict:
                     max_tokens=3000,
                 )
                 text = resp.choices[0].message.content.strip()
+                # Strip <think>...</think> blocks from reasoning models (Qwen, o1, etc.)
+                import re as _re
+                text = _re.sub(r'<think>.*?</think>', '', text, flags=_re.DOTALL).strip()
                 m = re.search(r"\[.*\]", text, re.DOTALL)
                 if m:
                     for r in json.loads(m.group()):
