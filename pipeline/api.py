@@ -22,6 +22,15 @@ app = FastAPI(
     description="API for Unilog Product Data Enrichment Pipeline",
 )
 
+@app.get("/")
+def root():
+    return {
+        "name": "UniIntel Product Intelligence API",
+        "status": "UP",
+        "docs": "/docs",
+        "health": "/api/v1/enrichment/health"
+    }
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
