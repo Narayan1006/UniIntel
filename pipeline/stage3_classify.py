@@ -124,6 +124,119 @@ def _smart_llm_classify(unclassified_rows: list) -> dict:
     return result
 
 
+# ── Unilog Dept > Class > Fine mapping ──────────────────────────────────────
+# Maps our AI classpath strings to the official Unilog 3-level hierarchy.
+# Format: classpath_substring -> (Dept, Class, Fine)
+_UNILOG_DEPT_MAP = [
+    # Appliances
+    ("Dishwasher",                  ("Appliances",               "Large Appliances",   "Dishwashers")),
+    ("Dryer",                       ("Appliances",               "Laundry Appliances",  "Dryers")),
+    ("Washer",                      ("Appliances",               "Laundry Appliances",  "Washers")),
+    ("Refrigerator",                ("Appliances",               "Large Appliances",   "Refrigerators")),
+    ("Range",                       ("Appliances",               "Large Appliances",   "Ranges")),
+    ("Oven",                        ("Appliances",               "Large Appliances",   "Ovens")),
+    ("Microwave",                   ("Appliances",               "Small Appliances",   "Microwaves")),
+    ("Laundry Appliance",           ("Appliances",               "Laundry Appliances",  "Laundry Centers")),
+    ("Kitchen Appliance",           ("Appliances",               "Large Appliances",   "Kitchen Appliances")),
+    ("Heater Kit",                  ("Appliances",               "Appliance Parts",    "Heater Kits")),
+    ("Appliance",                   ("Appliances",               "Large Appliances",   "Appliances")),
+    # Power Tools
+    ("Cordless Drill",              ("Power Tools",              "Drills",             "Cordless Drills")),
+    ("Hammer Drill",                ("Power Tools",              "Drills",             "Hammer Drills")),
+    ("Drill Press",                 ("Power Tools",              "Drills",             "Drill Presses")),
+    ("Drill",                       ("Power Tools",              "Drills",             "Cordless Drills")),
+    ("Cordless Impact Driver",      ("Power Tools",              "Impact Drivers & Wrenches", "Cordless Impact Drivers")),
+    ("Impact Driver",               ("Power Tools",              "Impact Drivers & Wrenches", "Cordless Impact Drivers")),
+    ("Impact Wrench",               ("Power Tools",              "Impact Drivers & Wrenches", "Cordless Impact Wrenches")),
+    ("Circular Saw",                ("Power Tools",              "Saws",               "Circular Saws")),
+    ("Miter Saw",                   ("Power Tools",              "Saws",               "Miter Saws")),
+    ("Reciprocating Saw",           ("Power Tools",              "Saws",               "Reciprocating Saws")),
+    ("Jig Saw",                     ("Power Tools",              "Saws",               "Jig Saws")),
+    ("Table Saw",                   ("Power Tools",              "Saws",               "Table Saws")),
+    ("Track Saw",                   ("Power Tools",              "Saws",               "Track Saws")),
+    ("Band Saw",                    ("Power Tools",              "Saws",               "Band Saws")),
+    ("Angle Grinder",               ("Power Tools",              "Grinders",           "Angle Grinders")),
+    ("Grinder",                     ("Power Tools",              "Grinders",           "Angle Grinders")),
+    ("Random Orbit Sander",         ("Power Tools",              "Sanders",            "Random Orbit Sanders")),
+    ("Belt Sander",                 ("Power Tools",              "Sanders",            "Belt Sanders")),
+    ("Detail Sander",               ("Power Tools",              "Sanders",            "Detail Sanders")),
+    ("Sander",                      ("Power Tools",              "Sanders",            "Sanders")),
+    ("Brad Nailer",                 ("Power Tools",              "Nailers & Staplers", "Brad Nailers")),
+    ("Finish Nailer",               ("Power Tools",              "Nailers & Staplers", "Finish Nailers")),
+    ("Framing Nailer",              ("Power Tools",              "Nailers & Staplers", "Framing Nailers")),
+    ("Roofing Nailer",              ("Power Tools",              "Nailers & Staplers", "Roofing Nailers")),
+    ("Nailer",                      ("Power Tools",              "Nailers & Staplers", "Cordless Nailers")),
+    ("Stapler",                     ("Power Tools",              "Nailers & Staplers", "Staplers")),
+    ("Oscillating Tool",            ("Power Tools",              "Oscillating Tools",  "Cordless Oscillating Tools")),
+    ("Router",                      ("Power Tools",              "Routers",            "Plunge Routers")),
+    ("Planer",                      ("Power Tools",              "Planers",            "Handheld Planers")),
+    ("Rotary Tool",                 ("Power Tools",              "Rotary Tools",       "Rotary Tool Kits")),
+    ("Vacuum",                      ("Power Tools",              "Vacuums",            "Wet/Dry Vacuums")),
+    ("Work Light",                  ("Power Tools",              "Lighting",           "LED Work Lights")),
+    ("Flashlight",                  ("Power Tools",              "Lighting",           "Flashlights")),
+    ("Combo Kit",                   ("Power Tools",              "Combo Kits",         "Cordless Combo Kits")),
+    ("Battery",                     ("Power Tools",              "Batteries & Chargers","Batteries")),
+    ("Charger",                     ("Power Tools",              "Batteries & Chargers","Chargers")),
+    ("Screwdriver Bit",             ("Power Tools",              "Accessories",        "Screwdriver Bits")),
+    ("Saw Blade",                   ("Power Tools",              "Accessories",        "Saw Blades")),
+    ("Hole Saw",                    ("Power Tools",              "Accessories",        "Hole Saws")),
+    ("Drill Bit",                   ("Power Tools",              "Accessories",        "Drill Bits")),
+    ("Router Bit",                  ("Power Tools",              "Accessories",        "Router Bits")),
+    ("Blade",                       ("Power Tools",              "Accessories",        "Saw Blades")),
+    ("Tool Bag",                    ("Power Tools",              "Storage",            "Tool Bags")),
+    ("Tool Box",                    ("Power Tools",              "Storage",            "Tool Boxes")),
+    ("Jobsite Speaker",             ("Power Tools",              "Accessories",        "Jobsite Speakers")),
+    ("Blower",                      ("Power Tools",              "Outdoor Power Equipment", "Blowers")),
+    ("Hedge Trimmer",               ("Power Tools",              "Outdoor Power Equipment", "Hedge Trimmers")),
+    ("Chainsaw",                    ("Power Tools",              "Outdoor Power Equipment", "Chainsaws")),
+    ("Trimmer",                     ("Power Tools",              "Trimmers",           "Cordless Trimmers")),
+    ("Auto-Feed Screwdriver",       ("Power Tools",              "Screwdrivers",       "Auto-Feed Screwdrivers")),
+    # Abrasives
+    ("Cut-Off Wheel",               ("Abrasives & Finishing",    "Abrasive Wheels",    "Cut-Off Wheels")),
+    ("Grinding Wheel",              ("Abrasives & Finishing",    "Abrasive Wheels",    "Grinding Wheels")),
+    ("Flap Disc",                   ("Abrasives & Finishing",    "Abrasive Wheels",    "Flap Discs")),
+    ("Wire Wheel",                  ("Abrasives & Finishing",    "Abrasive Wheels",    "Wire Wheels")),
+    ("Sanding Belt",                ("Abrasives & Finishing",    "Abrasive Rolls & Sheets", "Sanding Belts")),
+    ("Hook & Loop Disc",            ("Abrasives & Finishing",    "Abrasive Discs",     "Hook & Loop Discs")),
+    ("Fiber Disc",                  ("Abrasives & Finishing",    "Abrasive Discs",     "Fiber Discs")),
+    ("Sanding Sponge",              ("Abrasives & Finishing",    "Sponges & Pads",     "Sanding Sponges")),
+    ("Abrasive Disc",               ("Abrasives & Finishing",    "Abrasive Discs",     "Abrasive Discs")),
+    ("Abrasive Roll",               ("Abrasives & Finishing",    "Abrasive Rolls & Sheets", "Abrasive Rolls")),
+    ("Abrasive",                    ("Abrasives & Finishing",    "Abrasive Wheels",    "Abrasive Wheels")),
+    # Hand Tools
+    ("Screwdriver",                 ("Hand Tools",               "Screwdrivers",       "Bit Sets")),
+    ("Gauge",                       ("Hand Tools",               "Measuring Tools",    "Gauges")),
+    # Adhesives
+    ("Electrical Tape",             ("Adhesives & Tapes",        "Tapes",              "Electrical Tapes")),
+    ("Specialty Tape",              ("Adhesives & Tapes",        "Tapes",              "Specialty Tapes")),
+    ("Tape",                        ("Adhesives & Tapes",        "Tapes",              "Specialty Tapes")),
+    # Building
+    ("Mortar",                      ("Building Materials",       "Concrete & Masonry", "Mortar")),
+    # Plumbing
+    ("Coupling",                    ("Plumbing",                 "Pipe & Fittings",    "Couplings")),
+    ("Fitting",                     ("Plumbing",                 "Pipe & Fittings",    "Fittings")),
+    ("Kitchen Faucet",              ("Plumbing",                 "Faucets & Fixtures", "Kitchen Faucets")),
+    ("Ball Valve",                  ("Plumbing",                 "Valves",             "Ball Valves")),
+    ("Valve",                       ("Plumbing",                 "Valves",             "Valves")),
+    # Safety
+    ("Kneeling Pad",                ("Safety & PPE",             "Ergonomics",         "Kneeling Pads")),
+]
+
+
+def _dept_class_fine(classpath: str) -> tuple:
+    """Map a classpath string to (Dept, Class, Fine) using the Unilog taxonomy map."""
+    if not classpath or classpath == "Unclassified":
+        return "", "", ""
+    # Try each keyword in order (longer/more specific first)
+    for keyword, (dept, cls, fine) in _UNILOG_DEPT_MAP:
+        if keyword.lower() in classpath.lower():
+            return dept, cls, fine
+    # Fallback: split the classpath directly
+    parts = [p.strip() for p in classpath.split(">")]
+    parts += ["", "", ""]
+    return parts[0], parts[1], parts[2]
+
+
 def classify_all(df: pd.DataFrame) -> pd.DataFrame:
     classpaths = [""] * len(df)
     class_conf = [0]  * len(df)
@@ -149,21 +262,28 @@ def classify_all(df: pd.DataFrame) -> pd.DataFrame:
             if not classpaths[item["idx"]]:
                 classpaths[item["idx"]] = "Unclassified"
     elif to_llm:
-        print("  [Stage 3] No Groq key — rows set to 'Unclassified'.")
+        print("  [Stage 3] No Groq key -- rows set to 'Unclassified'.")
         for item in to_llm:
             classpaths[item["idx"]] = "Unclassified"
 
     df["Classpath"]            = classpaths
     df["classpath_confidence"] = class_conf
 
-    def split_path(p):
-        parts = (p.split(">") if p and p != "Unclassified" else [])
-        return (parts + ["", "", ""])[:3]
+    # Apply Unilog Dept > Class > Fine mapping
+    dept_list, class_list, fine_list = [], [], []
+    for cp in classpaths:
+        d, c, f = _dept_class_fine(cp)
+        dept_list.append(d)
+        class_list.append(c)
+        fine_list.append(f)
 
-    df[["Dept", "Class", "Fine"]] = df["Classpath"].apply(lambda p: pd.Series(split_path(p)))
+    df["Dept"]  = dept_list
+    df["Class"] = class_list
+    df["Fine"]  = fine_list
 
     classified = (df["Classpath"] != "Unclassified").sum()
-    print(f"[Stage 3] Total classified: {classified}/{len(df)} rows.")
+    dept_filled = sum(1 for d in dept_list if d)
+    print(f"[Stage 3] Total classified: {classified}/{len(df)} rows. Dept/Class/Fine filled: {dept_filled}/{len(df)}.")
     return df
 
 

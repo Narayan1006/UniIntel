@@ -31,87 +31,135 @@ _NORM_MAP = {
     for k, v in MANUFACTURER_CORRECTIONS.items()
 }
 
-# Supplementary brand hint: keywords in Part_Desc that signal a brand
-_DESC_BRAND_HINTS = {
-    "diablo":      ("Freud Inc.", "Diablo®"),
-    "cubitron":    ("3M Company", "3M™"),
-    "abranet":     ("Mirka Abrasives Inc.", "Mirka®"),
-    "hiolit":      ("Mirka Abrasives Inc.", "Mirka®"),
-    "milw":        ("Milwaukee Tool", "Milwaukee®"),
-    "milwaukee":   ("Milwaukee Tool", "Milwaukee®"),
-    "dewalt":      ("Stanley Black & Decker, Inc.", "DEWALT®"),
-    "makita":      ("Makita U.S.A., Inc.", "Makita®"),
-    "kreg":        ("Kreg Tool Company", "Kreg®"),
-    "paslode":     ("Illinois Tool Works Inc.", "Paslode®"),
-    "vessel":      ("Vessel Tools USA Inc.", "Vessel®"),
-    "bosch":       ("Robert Bosch Tool Corporation", "BOSCH®"),
-    "ridgid":      ("Emerson Electric Co.", "RIDGID®"),
-    "ryobi":       ("Techtronic Industries Co. Ltd.", "RYOBI®"),
-    "metabo":      ("Metabo Corporation", "Metabo®"),
-    "festool":     ("TTS Tooltechnic Systems AG & Co. KG", "Festool®"),
-    "flex":        ("Flex Tools USA LLC", "Flex®"),
-    "hilti":       ("Hilti, Inc.", "Hilti®"),
-    "porter cable": ("Stanley Black & Decker, Inc.", "PORTER-CABLE®"),
-    "craftsman":   ("Stanley Black & Decker, Inc.", "CRAFTSMAN®"),
-    "stanley":     ("Stanley Black & Decker, Inc.", "Stanley®"),
-    "irwin":       ("Irwin Industrial Tool Company", "IRWIN®"),
-    "lenox":       ("Lenox Industrial Tools", "LENOX®"),
-    "norton":      ("Saint-Gobain Abrasives, Inc.", "Norton®"),
-    "3m":          ("3M Company", "3M™"),
-    "mirka":       ("Mirka Abrasives Inc.", "Mirka®"),
-    "freud":       ("Freud Inc.", "Freud®"),
+# ── Brand name → (canonical_manufacturer, canonical_brand) ──────────────────
+# Used to resolve brand from E1_Brand / DIB_Brand / Part_Desc keywords.
+_BRAND_CANONICAL = {
+    # Tools
+    "diablo":        ("Freud Inc.",                          "Diablo®"),
+    "cubitron":      ("3M Company",                          "3M™"),
+    "abranet":       ("Mirka Abrasives Inc.",                 "Mirka®"),
+    "hiolit":        ("Mirka Abrasives Inc.",                 "Mirka®"),
+    "milw":          ("Milwaukee Tool",                       "Milwaukee®"),
+    "milwaukee":     ("Milwaukee Tool",                       "Milwaukee®"),
+    "dewalt":        ("Stanley Black & Decker, Inc.",         "DEWALT®"),
+    "makita":        ("Makita U.S.A., Inc.",                  "Makita®"),
+    "kreg":          ("Kreg Tool Company",                    "Kreg®"),
+    "paslode":       ("Illinois Tool Works Inc.",             "Paslode®"),
+    "vessel":        ("Vessel Tools USA Inc.",                "Vessel®"),
+    "bosch":         ("Robert Bosch Tool Corporation",        "BOSCH®"),
+    "ridgid":        ("Emerson Electric Co.",                 "RIDGID®"),
+    "ryobi":         ("Techtronic Industries Co. Ltd.",       "RYOBI®"),
+    "metabo":        ("Metabo Corporation",                   "Metabo®"),
+    "festool":       ("TTS Tooltechnic Systems AG & Co. KG",  "Festool®"),
+    "flex":          ("Flex Tools USA LLC",                   "Flex®"),
+    "hilti":         ("Hilti, Inc.",                          "Hilti®"),
+    "porter cable":  ("Stanley Black & Decker, Inc.",         "PORTER-CABLE®"),
+    "craftsman":     ("Stanley Black & Decker, Inc.",         "CRAFTSMAN®"),
+    "stanley":       ("Stanley Black & Decker, Inc.",         "Stanley®"),
+    "irwin":         ("Irwin Industrial Tool Company",        "IRWIN®"),
+    "lenox":         ("Lenox Industrial Tools",               "LENOX®"),
+    "norton":        ("Saint-Gobain Abrasives, Inc.",         "Norton®"),
+    "3m":            ("3M Company",                           "3M™"),
+    "mirka":         ("Mirka Abrasives Inc.",                 "Mirka®"),
+    "freud":         ("Freud Inc.",                           "Freud®"),
+    # Appliances
+    "whirlpool":     ("Whirlpool Corporation",                "Whirlpool®"),
+    "frigidaire":    ("Electrolux Home Products, Inc.",       "FRIGIDAIRE®"),
+    "ge":            ("GE Appliances",                        "GE®"),
+    "ge appliances": ("GE Appliances",                        "GE®"),
+    "maytag":        ("Whirlpool Corporation",                "Maytag®"),
+    "samsung":       ("Samsung Electronics America",          "Samsung®"),
+    "lg":            ("LG Electronics USA, Inc.",             "LG®"),
+    "bosch appliance":("BSH Home Appliances Corp.",           "BOSCH®"),
+    "kitchenaid":    ("Whirlpool Corporation",                "KitchenAid®"),
+    "amana":         ("Whirlpool Corporation",                "Amana®"),
+    "electrolux":    ("Electrolux Home Products, Inc.",       "Electrolux®"),
+    "speed queen":   ("Alliance Laundry Systems LLC",         "Speed Queen®"),
+    "miele":         ("Miele, Inc.",                          "Miele®"),
+    "thermador":     ("BSH Home Appliances Corp.",            "Thermador®"),
+    "kenmore":       ("Transformco",                          "Kenmore®"),
+    "rheem":         ("Rheem Manufacturing",                  "Rheem®"),
 }
+# Keep alias for desc-based hinting (backward compat)
+_DESC_BRAND_HINTS = _BRAND_CANONICAL
 
 
 def _normalise_key(s: str) -> str:
     return re.sub(r"[^a-z0-9 ]", "", s.lower().strip())
 
 
+def _resolve_from_brand_string(brand_str: str) -> tuple:
+    """Try to match a raw brand string against _BRAND_CANONICAL. Returns (mname, bname) or None."""
+    if not brand_str:
+        return None
+    b = re.sub(r"[^a-z0-9 ]", "", brand_str.lower().strip())
+    # Direct substring match
+    for kw, (mname, bname) in _BRAND_CANONICAL.items():
+        if kw in b:
+            return mname, bname
+    return None
+
+
 def resolve_brand(row: pd.Series) -> dict:
     """
     Given a DataFrame row, return dict with:
-        manufacturer_name, brand_name, brand_confidence
-    Resolution priority:
-      1. Exact match in MANUFACTURER_CORRECTIONS (normalised key)
-      2. Desc keyword hints
-      3. Fuzzy match of manuf name
-      4. Fallback: use raw manuf name as-is
+        MANUFACTURER_NAME, BRAND_NAME, brand_confidence
+    Resolution priority (highest → lowest):
+      1. E1_Brand field (most specific, from input)
+      2. DIB_Brand field
+      3. Unilog_Brand field
+      4. Exact match in MANUFACTURER_CORRECTIONS table
+      5. Fuzzy match of manufacturer name
+      6. Part_Desc keyword hints
+      7. Fallback: raw manufacturer name
     """
-    manuf_raw = str(row.get("_manuf_name", "")).strip()
-    desc      = str(row.get("Part_Desc", "")).lower()
-    dib_brand = str(row.get("DIB_Brand", "")).strip()
+    manuf_raw   = str(row.get("_manuf_name", "")).strip()
+    desc        = str(row.get("Part_Desc", "")).lower()
+    e1_brand    = str(row.get("E1_Brand",     "")).strip()
+    dib_brand   = str(row.get("DIB_Brand",    "")).strip()
+    unilog_brand= str(row.get("Unilog_Brand", "")).strip()
+
+    # 1. E1_Brand — highest confidence source
+    res = _resolve_from_brand_string(e1_brand)
+    if res:
+        return {"MANUFACTURER_NAME": res[0], "BRAND_NAME": res[1], "brand_confidence": 97}
+
+    # 2. DIB_Brand
+    res = _resolve_from_brand_string(dib_brand)
+    if res:
+        return {"MANUFACTURER_NAME": res[0], "BRAND_NAME": res[1], "brand_confidence": 92}
+
+    # 3. Unilog_Brand
+    res = _resolve_from_brand_string(unilog_brand)
+    if res:
+        return {"MANUFACTURER_NAME": res[0], "BRAND_NAME": res[1], "brand_confidence": 88}
 
     key = _normalise_key(manuf_raw)
 
-    # 1. Exact correction table
+    # 4. Exact match in correction table
     if key in _NORM_MAP:
         mname, bname = _NORM_MAP[key]
-        return {"MANUFACTURER_NAME": mname, "BRAND_NAME": bname, "brand_confidence": 95}
+        return {"MANUFACTURER_NAME": mname, "BRAND_NAME": bname, "brand_confidence": 85}
 
-    # 2. Fuzzy match against correction table keys
+    # 5. Fuzzy match of manufacturer name
     candidates = list(_NORM_MAP.keys())
-    if candidates:
+    if candidates and fuzz.token_set_ratio is not None:
         match, score, _ = process.extractOne(key, candidates, scorer=fuzz.token_set_ratio)
         if score >= 80:
             mname, bname = _NORM_MAP[match]
             return {"MANUFACTURER_NAME": mname, "BRAND_NAME": bname, "brand_confidence": int(score)}
 
-    # 3. Description keyword hint
+    # 6. Part_Desc keyword hint
     for kw, (mname, bname) in _DESC_BRAND_HINTS.items():
         if kw in desc:
-            return {"MANUFACTURER_NAME": mname, "BRAND_NAME": bname, "brand_confidence": 85}
+            return {"MANUFACTURER_NAME": mname, "BRAND_NAME": bname, "brand_confidence": 75}
 
-    # 4. DIB_Brand hint
-    if dib_brand:
-        for kw, (mname, bname) in _DESC_BRAND_HINTS.items():
-            if kw in dib_brand.lower():
-                return {"MANUFACTURER_NAME": mname, "BRAND_NAME": bname, "brand_confidence": 75}
-
-    # 5. Fallback
-    fallback_name = manuf_raw if manuf_raw else "Unknown Manufacturer"
+    # 7. Fallback
+    fallback_brand = e1_brand or dib_brand or unilog_brand or manuf_raw or "Unknown"
+    fallback_manuf = manuf_raw or "Unknown Manufacturer"
     return {
-        "MANUFACTURER_NAME": fallback_name,
-        "BRAND_NAME": dib_brand or fallback_name,
+        "MANUFACTURER_NAME": fallback_manuf,
+        "BRAND_NAME": fallback_brand,
         "brand_confidence": 40,
     }
 
