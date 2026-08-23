@@ -18,7 +18,6 @@ const Icons = {
   file:     'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6',
   external: 'M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3',
   check:    'M20 6L9 17l-5-5',
-  alert:    'M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01',
   home:     'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z M9 22V12h6v10',
   zap:      'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
   shield:   'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
@@ -27,9 +26,9 @@ const Icons = {
   arrowRight:'M5 12h14M12 5l7 7-7 7',
 };
 
-// ─── Apple / Premium Light SaaS Theme Styles ─────────────────────────────────
+// ─── Modern High-Tech SaaS CSS ───────────────────────────────────────────────
 const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -37,9 +36,9 @@ const css = `
     --bg:        #f8fafc;
     --border:    rgba(0, 0, 0, 0.08);
     --border-h:  rgba(0, 0, 0, 0.16);
-    --shadow:    0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
-    --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    --shadow:    0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+    --shadow-lg: 0 20px 40px -15px rgba(0, 113, 227, 0.12), 0 0 1px rgba(0,0,0,0.1);
     --text:      #0f172a;
     --text-sub:  #475569;
     --text-muted:#94a3b8;
@@ -52,7 +51,7 @@ const css = `
     --amber:     #f59e0b;
     --violet:    #6366f1;
     --violet-bg: rgba(99, 102, 241, 0.08);
-    --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
   }
 
   body {
@@ -69,7 +68,7 @@ const css = `
     min-height: 100vh;
   }
 
-  /* ── SaaS Navigation Bar ── */
+  /* ── Navbar ── */
   .topnav {
     position: sticky;
     top: 0;
@@ -157,12 +156,6 @@ const css = `
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 
-  .topnav-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
   .status-pill {
     display: flex;
     align-items: center;
@@ -200,42 +193,40 @@ const css = `
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 10px;
-    border-radius: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.02em;
   }
   .badge-primary { background: var(--primary-bg); color: var(--primary); border: 1px solid rgba(0, 113, 227, 0.2); }
   .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.2); }
-  .badge-violet { background: var(--violet-bg); color: var(--violet); border: 1px solid rgba(99, 102, 241, 0.2); }
 
   .btn-primary-lg {
     background: linear-gradient(135deg, #0071e3 0%, #0284c7 100%);
     color: #ffffff;
     border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
+    padding: 13px 28px;
+    border-radius: 12px;
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 14px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35);
   }
-  .btn-primary-lg:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 113, 227, 0.4); }
+  .btn-primary-lg:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 113, 227, 0.45); }
   .btn-primary-lg:disabled { opacity: 0.6; cursor: not-allowed; }
 
   .btn-secondary {
     background: #ffffff;
     color: var(--text);
     border: 1px solid var(--border);
-    padding: 11px 20px;
-    border-radius: 10px;
-    font-size: 13px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
@@ -362,124 +353,151 @@ export default function App() {
   );
 }
 
-// ─── HIGH-END B2B SAAS LANDING HOMEPAGE ──────────────────────────────────────
+// ─── MODERN HIGH-TECH B2B SAAS PRODUCT HOMEPAGE ──────────────────────────────
 function HomeView({ onStart }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
       
-      {/* ── Hero Section ── */}
-      <div className="card-surface" style={{
-        background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
-        border: '1px solid rgba(0, 113, 227, 0.15)',
-        padding: '52px 48px',
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: 'var(--shadow-lg)'
-      }}>
-        {/* Soft Background Accent Orb */}
-        <div style={{
-          position: 'absolute', top: -60, right: -60, width: 320, height: 320,
-          background: 'radial-gradient(circle, rgba(0,113,227,0.1) 0%, rgba(99,102,241,0.05) 50%, transparent 70%)',
-          borderRadius: '50%', pointerEvents: 'none'
-        }} />
+      {/* ── 1. Centered High-Impact Hero ── */}
+      <div style={{ textAlign: 'center', maxWidth: 840, margin: '0 auto', paddingTop: 12 }}>
+        <div style={{ marginBottom: 16 }}>
+          <span className="badge-enterprise badge-primary" style={{ fontSize: 12, padding: '6px 14px' }}>
+            <Icon d={Icons.sparkles} size={13} /> UniHack 2026 Submission &bull; 252-Column Unilog Schema
+          </span>
+        </div>
 
-        <div style={{ maxWidth: 760, position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
-            <span className="badge-enterprise badge-primary">UniHack 2026 Submission</span>
-            <span className="badge-enterprise badge-violet">252-Column Unilog Standard</span>
-          </div>
+        <h1 style={{
+          fontSize: 44, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.15,
+          color: '#0f172a', marginBottom: 20
+        }}>
+          Autonomous Product Intelligence & Catalog Enrichment Engine
+        </h1>
 
-          <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.2, color: '#0f172a', marginBottom: 16 }}>
-            Autonomous Product Catalog Intelligence & Data Enrichment Engine
-          </h1>
+        <p style={{ fontSize: 17, color: 'var(--text-sub)', lineHeight: 1.6, marginBottom: 32, maxWidth: 680, margin: '0 auto 32px' }}>
+          Transforms raw 6-column distributor catalogs into production-ready <strong>252-column Unilog Delivery Schema</strong> files with AI taxonomy, verifiable MFR source links & quality scoring.
+        </p>
 
-          <p style={{ fontSize: 16, color: 'var(--text-sub)', lineHeight: 1.6, marginBottom: 32 }}>
-            UniIntel transforms raw 6-column distributor files into complete <strong>252-column Unilog Delivery Schema</strong> records using an 8-stage parallel AI pipeline — powered by Groq Qwen 27B LLM reasoning, RapidFuzz brand matching, and verifiable source URLs.
-          </p>
-
-          <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
-            <button className="btn-primary-lg" onClick={onStart}>
-              <Icon d={Icons.play} size={15} fill="#ffffff" stroke="none" /> Start Enrichment Pipeline
-            </button>
-            <a href="https://github.com/Narayan1006/UniIntel" target="_blank" rel="noreferrer" className="btn-secondary" style={{ textDecoration: 'none' }}>
-              <Icon d={Icons.file} size={15} /> GitHub Repository <Icon d={Icons.external} size={12} />
-            </a>
-          </div>
+        <div style={{ display: 'flex', gap: 14, justifyContent: 'center', alignItems: 'center' }}>
+          <button className="btn-primary-lg" onClick={onStart}>
+            <Icon d={Icons.play} size={16} fill="#ffffff" stroke="none" /> Launch Enrichment Pipeline <Icon d={Icons.arrowRight} size={15} />
+          </button>
+          <a href="https://github.com/Narayan1006/UniIntel" target="_blank" rel="noreferrer" className="btn-secondary" style={{ textDecoration: 'none' }}>
+            <Icon d={Icons.file} size={15} /> GitHub Source Code
+          </a>
         </div>
       </div>
 
-      {/* ── Key Metrics Grid ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }}>
-        {[
-          { label: 'SCHEMA EXPANSION', val: '6 → 252', sub: 'Exact Unilog Delivery Columns' },
-          { label: 'GROUND TRUTH ACCURACY', val: '100%', sub: 'Verified Field Precision' },
-          { label: 'LLM CLUSTERING EFFICIENCY', val: '95%', sub: 'API Cost & Latency Savings' },
-          { label: 'SOURCE VERIFICATION', val: '5 URLs', sub: 'MFR + 4 Major Distributor Links' },
-        ].map(m => (
-          <div key={m.label} className="card-surface" style={{ padding: 22 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 8 }}>{m.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)', marginBottom: 4 }}>{m.val}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-sub)' }}>{m.sub}</div>
+      {/* ── 2. Interactive App Preview Mockup Window ── */}
+      <div style={{
+        background: '#ffffff',
+        border: '1px solid var(--border)',
+        borderRadius: 20,
+        boxShadow: 'var(--shadow-lg)',
+        overflow: 'hidden',
+      }}>
+        {/* macOS Window Controls Top Header */}
+        <div style={{
+          background: '#f8fafc', borderBottom: '1px solid var(--border)',
+          padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+        }}>
+          <div style={{ display: 'flex', gap: 7 }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ef4444' }} />
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#f59e0b' }} />
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#10b981' }} />
           </div>
-        ))}
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', fontFamily: 'monospace' }}>
+            uniintel-enrichment-pipeline // 252-column-delivery-engine
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--green)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span className="dot-online" /> LIVE ENGINE READY
+          </div>
+        </div>
+
+        {/* Mockup Product Pipeline Status Bar */}
+        <div style={{ padding: 24, background: '#fafafa', borderBottom: '1px solid var(--border)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+            {[
+              { label: 'SCHEMA EXPANSION', val: '6 → 252 Columns', color: 'var(--primary)' },
+              { label: 'CLASSIFICATION ACCURACY', val: '100% Precision', color: 'var(--green)' },
+              { label: 'GROQ LLM CLUSTERING', val: '95% API Cost Saved', color: 'var(--violet)' },
+              { label: 'SOURCE LINK VERIFICATION', val: '5 URLs Per SKU', color: 'var(--primary)' },
+            ].map((st, idx) => (
+              <div key={idx} style={{ background: '#ffffff', border: '1px solid var(--border)', padding: 14, borderRadius: 10 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 4 }}>{st.label}</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: st.color }}>{st.val}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mockup Data Table Preview */}
+        <div style={{ padding: '16px 24px 24px' }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>ENRICHED OUTPUT SCHEMA SAMPLE (252 COLUMNS)</span>
+            <span className="badge-enterprise badge-green">Validated Unilog Format</span>
+          </div>
+
+          <table style={{ width: '100%', fontSize: 12 }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                <th style={{ padding: '8px 12px' }}>Mfg Part Num</th>
+                <th style={{ padding: '8px 12px' }}>Resolved Brand</th>
+                <th style={{ padding: '8px 12px' }}>Taxonomy Classpath</th>
+                <th style={{ padding: '8px 12px' }}>Invoice Description</th>
+                <th style={{ padding: '8px 12px' }}>Source Verification</th>
+                <th style={{ padding: '8px 12px' }}>Trust Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { mpn: '6002-2RS', brand: 'SKF', tax: 'Bearings > Ball Bearings > Deep Groove', desc: 'SKF 6002-2RS BALL BEARING 15MM', link: 'skf.com/bearing', score: '98%' },
+                { mpn: '8401K11', brand: 'McMaster', tax: 'Raw Materials > Metals > Aluminum', desc: 'ALUMINUM SHEET 6061-T6 1/4 IN', link: 'mcmaster.com/8401k11', score: '96%' },
+                { mpn: '35N28', brand: 'Grainger', tax: 'Motors > AC Motors > Single Phase', desc: 'GRAINGER AC MOTOR 1/2HP 1725RPM', link: 'grainger.com/35n28', score: '95%' },
+              ].map((row, i) => (
+                <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontWeight: 700 }}>{row.mpn}</td>
+                  <td style={{ padding: '10px 12px' }}><span className="badge-enterprise badge-primary">{row.brand}</span></td>
+                  <td style={{ padding: '10px 12px', color: 'var(--text-sub)' }}>{row.tax}</td>
+                  <td style={{ padding: '10px 12px', fontFamily: 'monospace' }}>{row.desc}</td>
+                  <td style={{ padding: '10px 12px', color: 'var(--primary)' }}>{row.link}</td>
+                  <td style={{ padding: '10px 12px' }}><span className="badge-enterprise badge-green">{row.score}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* ── Feature Cards Grid ── */}
+      {/* ── 3. High-Impact Visual Feature Cards ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
         <div className="card-surface">
-          <div style={{ width: 42, height: 42, borderRadius: 10, background: 'var(--primary-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-            <Icon d={Icons.zap} size={20} stroke="var(--primary)" />
+          <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--primary-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+            <Icon d={Icons.zap} size={22} stroke="var(--primary)" />
           </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Smart LLM Clustering</h3>
+          <h3 style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>Smart LLM Clustering</h3>
           <p style={{ fontSize: 13, color: 'var(--text-sub)', lineHeight: 1.5 }}>
-            Clusters 1,000 raw catalog SKUs into 50 unique product types. Reduces Groq Qwen LLM API calls by 95%, ensuring zero rate limits and lightning fast execution.
+            Clusters 1,000 SKUs into 50 unique product types. Saves 95% LLM API calls with zero rate limits.
           </p>
         </div>
 
         <div className="card-surface">
-          <div style={{ width: 42, height: 42, borderRadius: 10, background: 'var(--green-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-            <Icon d={Icons.shield} size={20} stroke="var(--green)" />
+          <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--green-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+            <Icon d={Icons.shield} size={22} stroke="var(--green)" />
           </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Verifiable Source Links</h3>
+          <h3 style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>Verifiable Source Links</h3>
           <p style={{ fontSize: 13, color: 'var(--text-sub)', lineHeight: 1.5 }}>
-            Every enriched product is attached with primary manufacturer homepage URLs + 4 distributor search verification endpoints (Grainger, MSC Direct, McMaster-Carr, Fastenal).
+            Attaches MFR homepage URLs + 4 distributor search endpoints (Grainger, MSC, McMaster, Fastenal).
           </p>
         </div>
 
         <div className="card-surface">
-          <div style={{ width: 42, height: 42, borderRadius: 10, background: 'var(--violet-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-            <Icon d={Icons.star} size={20} stroke="var(--violet)" />
+          <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--violet-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+            <Icon d={Icons.star} size={22} stroke="var(--violet)" />
           </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>5-Factor Trust Scoring</h3>
+          <h3 style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>5-Factor Trust Scoring</h3>
           <p style={{ fontSize: 13, color: 'var(--text-sub)', lineHeight: 1.5 }}>
-            Computes a weighted quality score (0–100) per SKU based on brand, taxonomy, description compliance, attributes, and source URLs. Low-confidence rows are automatically routed to a Review Queue.
+            Weighted quality score (0–100) per row automatically routing low-confidence items to Human QA Review.
           </p>
-        </div>
-      </div>
-
-      {/* ── 8-Stage Architecture Flow ── */}
-      <div className="card-surface">
-        <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Icon d={Icons.cpu} size={20} stroke="var(--primary)" /> 8-Stage Parallel Intelligence Pipeline
-        </h2>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
-          {[
-            { num: '01', title: 'Data Ingestion', desc: 'Auto UTF-8 cleaning, N/A stripping, and MPN deduplication.' },
-            { num: '02', title: 'Brand Resolution', desc: 'RapidFuzz matching against canonical manufacturer dictionary.' },
-            { num: '03', title: 'Source Verification', desc: 'MFR homepage mapping + Grainger/MSC/McMaster/Fastenal URLs.' },
-            { num: '04', title: 'AI Classification', desc: 'Groq Qwen 27B LLM clustering for Dept > Class > Fine taxonomy.' },
-            { num: '05', title: 'Attribute Extraction', desc: 'Extracts up to 50 key/value pairs with UOM standardisation.' },
-            { num: '06', title: 'Description Engine', desc: 'Generates Invoice (≤40 CAPS), Mobile, Short, Long & Retail formats.' },
-            { num: '07', title: 'Trust Scoring', desc: '5-factor quality score automatically creating review queue.' },
-            { num: '08', title: 'Delivery Export', desc: 'Outputs ready-to-ingest 252-column Unilog CSV.' },
-          ].map(s => (
-            <div key={s.num} style={{ background: '#f8fafc', border: '1px solid var(--border)', padding: 16, borderRadius: 10 }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--primary)', marginBottom: 4 }}>STAGE {s.num}</div>
-              <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{s.title}</div>
-              <div style={{ fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.4 }}>{s.desc}</div>
-            </div>
-          ))}
         </div>
       </div>
 
