@@ -32,33 +32,36 @@ const Icons = {
   external: 'M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3',
 };
 
-// ─── Enterprise Linear/Vercel Theme Styles ──────────────────────────────────
+// ─── Apple / macOS Light Theme Styles (Top Nav Layout) ──────────────────────
 const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg:          #090d16;
-    --bg-surface:  #0f172a;
-    --bg-card:     #1e293b;
-    --bg-glass:    rgba(15, 23, 42, 0.85);
-    --border:      rgba(255, 255, 255, 0.08);
-    --border-h:    rgba(255, 255, 255, 0.16);
-    --text:        #f8fafc;
-    --text-sub:    #94a3b8;
-    --text-muted:  #64748b;
-    --primary:     #38bdf8;
-    --primary-glow:rgba(56, 189, 248, 0.15);
-    --accent:      #6366f1;
-    --green:       #10b981;
-    --green-bg:    rgba(16, 185, 129, 0.12);
-    --amber:       #f59e0b;
-    --amber-bg:    rgba(245, 158, 11, 0.12);
-    --red:         #ef4444;
-    --red-bg:      rgba(239, 68, 68, 0.12);
-    --font-sans:   'Plus Jakarta Sans', -apple-system, sans-serif;
-    --font-mono:   'JetBrains Mono', monospace;
+    --bg:        #f5f5f7;
+    --bg2:       #ffffff;
+    --bg3:       #f0f0f2;
+    --border:    rgba(0, 0, 0, 0.08);
+    --border-h:  rgba(0, 0, 0, 0.16);
+    --shadow:    0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03);
+    --text:      #1d1d1f;
+    --text-sub:  #6e6e73;
+    --text-muted:#aeaeb2;
+    --primary:   #0071e3;
+    --primary-h: #0077ed;
+    --primary-bg:rgba(0, 113, 227, 0.08);
+    --green:     #34c759;
+    --green-bg:  rgba(52, 199, 89, 0.10);
+    --red:       #ff3b30;
+    --red-bg:    rgba(255, 59, 48, 0.10);
+    --amber:     #ff9500;
+    --amber-bg:  rgba(255, 149, 0, 0.10);
+    --violet:    #5e5ce6;
+    --violet-bg: rgba(94, 92, 230, 0.10);
+    --radius:    12px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
   body {
@@ -67,9 +70,6 @@ const css = `
     color: var(--text);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
-    background-image: 
-      radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
   }
 
   .app-wrapper {
@@ -78,17 +78,17 @@ const css = `
     min-height: 100vh;
   }
 
-  /* ── Top Navigation Bar ── */
+  /* ── Apple Top Navigation Bar ── */
   .topnav {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--bg-glass);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     padding: 0 32px;
-    height: 64px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -97,53 +97,50 @@ const css = `
   .brand-group {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .brand-logo-box {
-    width: 34px;
-    height: 34px;
-    background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
   }
 
   .brand-title {
     font-size: 16px;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #fff;
+    color: var(--text);
   }
 
   .brand-tag {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
     padding: 2px 8px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--border);
+    background: var(--primary-bg);
+    border: 1px solid rgba(0, 113, 227, 0.2);
     border-radius: 20px;
-    color: var(--text-sub);
+    color: var(--primary);
   }
 
   .nav-tabs {
     display: flex;
     align-items: center;
     gap: 4px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.04);
     padding: 4px;
     border-radius: 10px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(0, 0, 0, 0.04);
   }
 
   .nav-tab-btn {
     background: transparent;
     border: none;
-    padding: 8px 16px;
+    padding: 7px 15px;
     border-radius: 7px;
     font-family: var(--font-sans);
     font-size: 13px;
@@ -152,26 +149,26 @@ const css = `
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     transition: all 0.2s ease;
   }
 
   .nav-tab-btn:hover {
     color: var(--text);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.6);
   }
 
   .nav-tab-btn.active {
-    background: var(--primary);
-    color: #090d16;
+    background: #ffffff;
+    color: var(--primary);
     font-weight: 700;
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 
   .topnav-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
   }
 
   .status-pill {
@@ -180,31 +177,32 @@ const css = `
     gap: 8px;
     padding: 5px 12px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.04);
+    background: #ffffff;
     border: 1px solid var(--border);
     font-size: 12px;
     font-weight: 600;
+    box-shadow: var(--shadow);
   }
 
-  .dot-online { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
-  .dot-offline { width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .dot-online { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot-offline { width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 6px var(--red); }
 
   /* ── Layout & Container ── */
   .main-content {
     flex: 1;
-    max-width: 1280px;
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     padding: 32px 24px;
   }
 
-  /* ── Utility UI Cards & Badges ── */
+  /* ── Apple Light Cards & Badges ── */
   .card-surface {
-    background: var(--bg-surface);
+    background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-md);
   }
 
   .badge-enterprise {
@@ -215,19 +213,19 @@ const css = `
     border-radius: 6px;
     font-size: 11px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
   }
-  .badge-primary { background: rgba(56, 189, 248, 0.12); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.25); }
-  .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.25); }
-  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.25); }
+  .badge-primary { background: var(--primary-bg); color: var(--primary); border: 1px solid rgba(0, 113, 227, 0.2); }
+  .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(52, 199, 89, 0.2); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(255, 149, 0, 0.2); }
+  .badge-violet { background: var(--violet-bg); color: var(--violet); border: 1px solid rgba(94, 92, 230, 0.2); }
 
   .btn-primary-lg {
-    background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-    color: #090d16;
+    background: var(--primary);
+    color: #ffffff;
     border: none;
-    padding: 12px 24px;
-    border-radius: 9px;
+    padding: 11px 22px;
+    border-radius: 10px;
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 700;
@@ -236,16 +234,16 @@ const css = `
     align-items: center;
     gap: 8px;
     transition: all 0.2s ease;
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
   }
-  .btn-primary-lg:hover { transform: translateY(-1px); box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); }
+  .btn-primary-lg:hover { background: var(--primary-h); transform: translateY(-1px); }
 
   .btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
+    background: #ffffff;
     color: var(--text);
     border: 1px solid var(--border);
     padding: 10px 18px;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -253,29 +251,31 @@ const css = `
     align-items: center;
     gap: 8px;
     transition: all 0.2s ease;
+    box-shadow: var(--shadow);
   }
-  .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--border-h); }
+  .btn-secondary:hover { background: var(--bg3); }
 
-  /* ── Table & Data Styles ── */
+  /* ── Light Table & Data Styles ── */
   .table-container {
     overflow-x: auto;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: var(--bg-surface);
+    background: #ffffff;
+    box-shadow: var(--shadow-md);
   }
   table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-  th { background: rgba(255, 255, 255, 0.02); color: var(--text-sub); font-weight: 600; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  th { background: #fafafa; color: var(--text-sub); font-weight: 600; padding: 12px 16px; border-bottom: 1px solid var(--border); }
   td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
-  tr:hover td { background: rgba(255, 255, 255, 0.02); }
+  tr:hover td { background: #f8f8fa; }
 
   /* ── Footer ── */
   footer {
     border-top: 1px solid var(--border);
-    padding: 24px;
+    padding: 20px;
     text-align: center;
     font-size: 12px;
-    color: var(--text-muted);
-    background: var(--bg-surface);
+    color: var(--text-sub);
+    background: #ffffff;
     margin-top: auto;
   }
 `;
@@ -321,12 +321,12 @@ export default function App() {
         <header className="topnav">
           <div className="brand-group">
             <div className="brand-logo-box">
-              <Icon d={Icons.logo} size={18} stroke="#090d16" />
+              <Icon d={Icons.logo} size={18} stroke="#ffffff" />
             </div>
             <div>
               <div className="brand-title">UniIntel</div>
             </div>
-            <span className="brand-tag">Enterprise AI Engine</span>
+            <span className="brand-tag">Product AI Engine</span>
           </div>
 
           <nav className="nav-tabs">
@@ -346,7 +346,7 @@ export default function App() {
             <div className="status-pill">
               <span className={engineUp === true ? 'dot-online' : 'dot-offline'} />
               <span style={{ color: engineUp === true ? 'var(--green)' : 'var(--text-sub)' }}>
-                {engineUp === true ? 'Backend Online' : engineUp === false ? 'Backend Offline' : 'Connecting…'}
+                {engineUp === true ? 'Engine Online' : engineUp === false ? 'Engine Offline' : 'Checking…'}
               </span>
             </div>
           </div>
@@ -361,7 +361,7 @@ export default function App() {
           {activeTab === 'exports'  && <ExportsView  />}
         </main>
 
-        {/* ── Enterprise Footer ── */}
+        {/* ── Footer ── */}
         <footer>
           UniIntel Intelligence Platform &bull; Unilog Product Intelligence Standard &bull; UniHack 2026 Submission UNIH-2435
         </footer>
@@ -371,32 +371,32 @@ export default function App() {
   );
 }
 
-// ─── HOME VIEW (ENTERPRISE HERO) ──────────────────────────────────────────────
+// ─── HOME VIEW (APPLE LIGHT HERO) ─────────────────────────────────────────────
 function HomeView({ onStart }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
       {/* Hero Banner */}
       <div className="card-surface" style={{
-        background: 'linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.7) 100%)',
-        border: '1px solid var(--border)',
-        padding: '48px 40px',
+        background: 'linear-gradient(135deg, rgba(0,113,227,0.05) 0%, rgba(94,92,230,0.05) 100%)',
+        border: '1px solid rgba(0,113,227,0.15)',
+        padding: '40px',
         position: 'relative',
         overflow: 'hidden'
       }}>
         <div style={{ maxWidth: 720 }}>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
             <span className="badge-enterprise badge-primary">UniHack 2026 Official</span>
-            <span className="badge-enterprise badge-green">252-Column Unilog Standard</span>
+            <span className="badge-enterprise badge-violet">Submission UNIH-2435</span>
           </div>
-          <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: 16 }}>
+          <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: 14 }}>
             Autonomous Product Catalog Intelligence & Data Enrichment Engine
           </h1>
-          <p style={{ fontSize: 15, color: 'var(--text-sub)', lineHeight: 1.6, marginBottom: 28 }}>
-            Transform raw 6-column distributor catalogs into production-ready 252-column Unilog delivery files. Powered by Groq Qwen 27B LLM reasoning, RapidFuzz canonical matching, and 5-factor quality audit scoring.
+          <p style={{ fontSize: 15, color: 'var(--text-sub)', lineHeight: 1.6, marginBottom: 24 }}>
+            Transform raw 6-column distributor catalogs into production-ready <strong>252-column Unilog Delivery Format</strong> files. Powered by Groq Qwen 27B LLM reasoning, RapidFuzz canonical matching, and 5-factor quality audit scoring.
           </p>
           <div style={{ display: 'flex', gap: 12 }}>
             <button className="btn-primary-lg" onClick={onStart}>
-              <Icon d={Icons.play} size={16} fill="#090d16" stroke="none" /> Launch Enrichment Pipeline
+              <Icon d={Icons.play} size={15} fill="#ffffff" stroke="none" /> Launch Enrichment Pipeline
             </button>
             <a href="https://github.com/Narayan1006/UniIntel" target="_blank" rel="noreferrer" className="btn-secondary" style={{ textDecoration: 'none' }}>
               <Icon d={Icons.file} size={15} /> Documentation & Code
@@ -414,8 +414,8 @@ function HomeView({ onStart }) {
           { label: 'SOURCE VERIFICATION', val: '5 URLs', sub: 'MFR + 4 Major Distributor Links' },
         ].map(m => (
           <div key={m.label} className="card-surface" style={{ padding: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 8 }}>{m.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--primary)', marginBottom: 4 }}>{m.val}</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-sub)', letterSpacing: '0.05em', marginBottom: 6 }}>{m.label}</div>
+            <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--primary)', marginBottom: 4 }}>{m.val}</div>
             <div style={{ fontSize: 12, color: 'var(--text-sub)' }}>{m.sub}</div>
           </div>
         ))}
@@ -423,10 +423,10 @@ function HomeView({ onStart }) {
 
       {/* Pipeline Architecture Row */}
       <div className="card-surface">
-        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
           <Icon d={Icons.cpu} size={18} stroke="var(--primary)" /> 8-Stage Autonomous Pipeline Architecture
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
           {[
             { num: '01', title: 'Data Ingestion', desc: 'Auto UTF-8 cleaning, N/A stripping, and MPN deduplication.' },
             { num: '02', title: 'Brand Resolution', desc: 'RapidFuzz matching against canonical manufacturer dictionary.' },
@@ -437,9 +437,9 @@ function HomeView({ onStart }) {
             { num: '07', title: 'Trust Scoring', desc: '5-factor quality score automatically creating review queue.' },
             { num: '08', title: 'Delivery Export', desc: 'Outputs ready-to-ingest 252-column Unilog CSV.' },
           ].map(s => (
-            <div key={s.num} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', padding: 16, borderRadius: 10 }}>
-              <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--primary)', marginBottom: 6 }}>STAGE {s.num}</div>
-              <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{s.title}</div>
+            <div key={s.num} style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 14, borderRadius: 10 }}>
+              <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--primary)', marginBottom: 4 }}>STAGE {s.num}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{s.title}</div>
               <div style={{ fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.4 }}>{s.desc}</div>
             </div>
           ))}
@@ -452,7 +452,6 @@ function HomeView({ onStart }) {
 // ─── UPLOAD VIEW ─────────────────────────────────────────────────────────────
 function UploadView({ onDone }) {
   const [status, setStatus] = useState('idle');
-  const [filename, setFilename] = useState('');
 
   const handleUpload = () => {
     setStatus('uploading');
@@ -462,18 +461,18 @@ function UploadView({ onDone }) {
         setStatus('done');
         onDone();
       })
-      .catch(() => setStatus('done')); // Fallback for instant test
+      .catch(() => setStatus('done'));
   };
 
   return (
-    <div style={{ maxWidth: 640, margin: '40px auto' }}>
-      <div className="card-surface" style={{ textAlign: 'center', padding: 40 }}>
+    <div style={{ maxWidth: 600, margin: '40px auto' }}>
+      <div className="card-surface" style={{ textAlign: 'center', padding: 36 }}>
         <div style={{
-          width: 56, height: 56, borderRadius: 14, background: 'rgba(56, 189, 248, 0.1)',
-          border: '1px solid rgba(56, 189, 248, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 20px'
+          width: 52, height: 52, borderRadius: 14, background: 'var(--primary-bg)',
+          border: '1px solid rgba(0, 113, 227, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          margin: '0 auto 18px'
         }}>
-          <Icon d={Icons.download} size={24} stroke="var(--primary)" />
+          <Icon d={Icons.download} size={22} stroke="var(--primary)" />
         </div>
         <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Upload Raw Product Catalog</h2>
         <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 24 }}>
@@ -481,14 +480,14 @@ function UploadView({ onDone }) {
         </p>
 
         <div style={{
-          border: '2px dashed var(--border-h)', borderRadius: 12, padding: 32,
-          background: 'rgba(255,255,255,0.01)', marginBottom: 24, cursor: 'pointer'
+          border: '2px dashed var(--border-h)', borderRadius: 12, padding: 30,
+          background: '#fafafa', marginBottom: 24, cursor: 'pointer'
         }} onClick={handleUpload}>
-          <Icon d={Icons.file} size={32} stroke="var(--text-muted)" style={{ marginBottom: 12 }} />
+          <Icon d={Icons.file} size={30} stroke="var(--text-sub)" style={{ marginBottom: 10 }} />
           <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 4 }}>
             Click to upload or drag & drop CSV file
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Default: Unihack Sample Dataset - Input.csv</div>
+          <div style={{ fontSize: 11, color: 'var(--text-sub)' }}>Default: Unihack Sample Dataset - Input.csv</div>
         </div>
 
         <button className="btn-primary-lg" style={{ width: '100%', justifyContent: 'center' }} onClick={handleUpload}>
@@ -521,7 +520,7 @@ function PipelineView() {
           <h2 style={{ fontSize: 20, fontWeight: 800 }}>Enrichment Execution Engine</h2>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Current Status</div>
+          <div style={{ fontSize: 12, color: 'var(--text-sub)' }}>Current Status</div>
           <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--primary)' }}>
             {pipelineState.is_running ? 'Running Stage ' + pipelineState.stage : 'Complete'}
           </div>
@@ -536,11 +535,11 @@ function PipelineView() {
             const isCurr = pipelineState.stage === s.num && pipelineState.is_running;
             return (
               <div key={s.num} style={{
-                background: isCurr ? 'rgba(56, 189, 248, 0.1)' : 'rgba(255,255,255,0.02)',
+                background: isCurr ? 'var(--primary-bg)' : '#fafafa',
                 border: isCurr ? '1px solid var(--primary)' : '1px solid var(--border)',
                 padding: 14, borderRadius: 8
               }}>
-                <div style={{ fontSize: 11, fontWeight: 800, color: isDone ? 'var(--green)' : isCurr ? 'var(--primary)' : 'var(--text-muted)' }}>
+                <div style={{ fontSize: 11, fontWeight: 800, color: isDone ? 'var(--green)' : isCurr ? 'var(--primary)' : 'var(--text-sub)' }}>
                   STAGE 0{s.num}
                 </div>
                 <div style={{ fontSize: 13, fontWeight: 700, marginTop: 4 }}>{s.name}</div>
@@ -601,10 +600,10 @@ function CatalogView() {
             ) : (
               products.map((p, idx) => (
                 <tr key={idx}>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{p.Mfg_Part_Num}</td>
+                  <td style={{ fontFamily: 'monospace', fontWeight: 600 }}>{p.Mfg_Part_Num}</td>
                   <td><span className="badge-enterprise badge-primary">{p.BRAND_NAME || p.MANUFACTURER_NAME}</span></td>
                   <td style={{ fontSize: 12, color: 'var(--text-sub)' }}>{p.TAXONOMY_CLASSPATH}</td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{p.INVOICE_DESC}</td>
+                  <td style={{ fontFamily: 'monospace', fontSize: 12 }}>{p.INVOICE_DESC}</td>
                   <td>
                     {p.MFR_URL ? (
                       <a href={p.MFR_URL} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none' }}>
@@ -626,7 +625,7 @@ function CatalogView() {
 // ─── EXPORTS VIEW ────────────────────────────────────────────────────────────
 function ExportsView() {
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
+    <div style={{ maxWidth: 700, margin: '0 auto' }}>
       <div className="card-surface">
         <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Delivery CSV Exports</h2>
         <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 24 }}>
@@ -634,7 +633,7 @@ function ExportsView() {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div style={{ fontSize: 14, fontWeight: 700 }}>252-Column Unilog Delivery CSV</div>
               <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Complete enriched dataset ready for catalog import</div>
@@ -644,7 +643,7 @@ function ExportsView() {
             </a>
           </div>
 
-          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div style={{ fontSize: 14, fontWeight: 700 }}>Human Review Queue CSV</div>
               <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Flagged low-confidence rows needing QA review</div>
