@@ -494,6 +494,7 @@ function HomeView({ onStart }) {
 function UploadView({ onDone }) {
   const [status, setStatus] = useState('idle');
   const [file, setFile] = useState(null);
+  const [apiKey, setApiKey] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const fileInputRef = useRef(null);
 
@@ -528,6 +529,9 @@ function UploadView({ onDone }) {
 
     const formData = new FormData();
     formData.append('file', file);
+    if (apiKey.trim()) {
+      formData.append('groq_api_key', apiKey.trim());
+    }
 
     fetch(`${ENRICHMENT_API}/upload`, {
       method: 'POST',
@@ -558,9 +562,33 @@ function UploadView({ onDone }) {
           <Icon d={Icons.download} size={22} stroke="var(--primary)" />
         </div>
         <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Upload Raw Product Catalog</h2>
-        <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 24 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 20 }}>
           Upload any 6-column distributor CSV (Mfg_Part_Num, Part_Desc, Brand fields, Part_Manuf).
         </p>
+
+        {/* ── Optional Groq API Key Input Field ── */}
+        <div style={{ marginBottom: 20, textAlign: 'left' }}>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
+            Groq API Key <span style={{ fontWeight: 400, color: 'var(--text-sub)' }}>(Optional • uses server default if empty)</span>
+          </label>
+          <input
+            type="password"
+            placeholder="gsk_..."
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              borderRadius: 8,
+              border: '1px solid var(--border)',
+              fontSize: 13,
+              fontFamily: 'monospace',
+              background: '#f8fafc',
+              color: 'var(--text)',
+              outline: 'none',
+            }}
+          />
+        </div>
 
         <input
           type="file"

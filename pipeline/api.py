@@ -124,12 +124,22 @@ def trigger_pipeline(background_tasks: BackgroundTasks):
 
 # ─── Upload CSV + Run ─────────────────────────────────────────────────────────
 @app.post("/api/v1/enrichment/upload")
-async def upload_and_run(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+async def upload_and_run(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    groq_api_key: str = None
+):
     if pipeline_state["is_running"]:
         raise HTTPException(status_code=409, detail="Pipeline already running. Please wait.")
 
     if not file.filename.lower().endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only .csv files are accepted.")
+
+    if groq_api_key and groq_api_key.strip():
+        import os
+        os.environ["GROQ_API_KEY"] = groq_api_key.strip()
+        import stage3_classify
+        stage3_classify._client = None  # Reset client to use new key
 
     upload_dir  = ROOT / "pipeline" / "output"
     upload_dir.mkdir(parents=True, exist_ok=True)
