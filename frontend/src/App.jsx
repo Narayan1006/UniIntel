@@ -364,11 +364,10 @@ export default function App() {
         <div className="main">
           <header className="topbar">
             <span className="topbar-title">
-              <span className="topbar-title">
-              {activeTab === 'home'     ? 'Welcome to UniIntel'         :
-               activeTab === 'upload'   ? 'Upload Product Catalog'    :
-               activeTab === 'pipeline' ? 'Enrichment Pipeline'       :
-               activeTab === 'catalog'  ? 'Product Catalog'           : 'Exports & Downloads'}
+              {activeTab === 'home'     ? 'Welcome to UniIntel'      :
+               activeTab === 'upload'   ? 'Upload Product Catalog'   :
+               activeTab === 'pipeline' ? 'Enrichment Pipeline'      :
+               activeTab === 'catalog'  ? 'Product Catalog'          : 'Exports & Downloads'}
             </span>
             <div className="topbar-right">
               <span className="badge badge-violet">UniHack 2026</span>
