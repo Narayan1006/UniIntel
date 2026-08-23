@@ -450,9 +450,9 @@ function HomeView({ onStart }) {
   );
 }
 
-// ─── REAL CSV UPLOAD VIEW ────────────────────────────────────────────────────
+// ─── REAL CSV UPLOAD VIEW (AUTO REDIRECT TO PIPELINE) ────────────────────────
 function UploadView({ onDone }) {
-  const [status, setStatus] = useState('idle'); // idle | uploading | error
+  const [status, setStatus] = useState('idle');
   const [file, setFile] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const fileInputRef = useRef(null);
@@ -499,7 +499,7 @@ function UploadView({ onDone }) {
           throw new Error(data.detail || 'Upload failed.');
         }
         setStatus('idle');
-        onDone();
+        onDone(); // Automatically redirects directly to AI Pipeline stage tab!
       })
       .catch((err) => {
         setStatus('error');
@@ -605,7 +605,7 @@ function PipelineView() {
       <div className="card-surface" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <span className={`badge-enterprise ${pipelineState.is_running ? 'badge-primary' : 'badge-green'}`} style={{ marginBottom: 8 }}>
-            {pipelineState.is_running ? 'Active Pipeline Running' : 'Pipeline Execution Ready'}
+            {pipelineState.is_running ? 'Active Pipeline Running' : 'Pipeline Execution Status'}
           </span>
           <h2 style={{ fontSize: 20, fontWeight: 800 }}>Enrichment Execution Engine</h2>
           {pipelineState.filename && (
@@ -717,37 +717,69 @@ function CatalogView() {
   );
 }
 
-// ─── DYNAMIC EXPORTS VIEW (NO HARDCODED DATA) ─────────────────────────────────
+// ─── DYNAMIC EXPORTS VIEW (EMPTY STATE WHEN NO FILE READY) ─────────────────────
 function ExportsView() {
+  const [hasOutput, setHasOutput] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${ENRICHMENT_API}/status`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.progress === 'completed' || d.stage >= 7) {
+          setHasOutput(true);
+        } else {
+          setHasOutput(false);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setHasOutput(false);
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <div style={{ maxWidth: 700, margin: '0 auto' }}>
+    <div style={{ maxWidth: 700, margin: '40px auto' }}>
       <div className="card-surface">
         <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Delivery CSV Exports</h2>
         <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 24 }}>
           Download enriched CSV outputs generated directly from the latest pipeline execution.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 700 }}>252-Column Unilog Delivery CSV</div>
-              <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Complete enriched dataset ready for catalog import</div>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-sub)' }}>Checking output files…</div>
+        ) : !hasOutput ? (
+          <div style={{ textAlign: 'center', padding: 40, border: '1px dashed var(--border-h)', borderRadius: 12, background: '#fafafa' }}>
+            <Icon d={Icons.file} size={32} stroke="var(--text-sub)" style={{ marginBottom: 12 }} />
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>No Export Files Available Yet</div>
+            <div style={{ fontSize: 12, color: 'var(--text-sub)' }}>
+              Please upload a CSV catalog and run the enrichment pipeline first to generate delivery outputs.
             </div>
-            <a href={`${ENRICHMENT_API}/download/delivery-csv`} download className="btn-primary-lg" style={{ fontSize: 13, padding: '8px 16px', textDecoration: 'none' }}>
-              <Icon d={Icons.download} size={14} /> Download Delivery CSV
-            </a>
           </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700 }}>252-Column Unilog Delivery CSV</div>
+                <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Complete enriched dataset ready for catalog import</div>
+              </div>
+              <a href={`${ENRICHMENT_API}/download/delivery-csv`} download className="btn-primary-lg" style={{ fontSize: 13, padding: '8px 16px', textDecoration: 'none' }}>
+                <Icon d={Icons.download} size={14} /> Download Delivery CSV
+              </a>
+            </div>
 
-          <div style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 700 }}>Human Review Queue CSV</div>
-              <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Flagged low-confidence rows needing QA review</div>
+            <div style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 20, borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700 }}>Human Review Queue CSV</div>
+                <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Flagged low-confidence rows needing QA review</div>
+              </div>
+              <a href={`${ENRICHMENT_API}/download/review-queue`} download className="btn-secondary" style={{ fontSize: 13, padding: '8px 16px', textDecoration: 'none' }}>
+                <Icon d={Icons.download} size={14} /> Download Review Queue
+              </a>
             </div>
-            <a href={`${ENRICHMENT_API}/download/review-queue`} download className="btn-secondary" style={{ fontSize: 13, padding: '8px 16px', textDecoration: 'none' }}>
-              <Icon d={Icons.download} size={14} /> Download Review Queue
-            </a>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
