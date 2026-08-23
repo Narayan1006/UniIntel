@@ -7,7 +7,9 @@ import re
 import json
 import pandas as pd
 from groq import Groq
-from config import CATEGORY_KEYWORDS, GROQ_API_KEY, GROQ_MODEL, GROQ_FALLBACK
+from config import CATEGORY_KEYWORDS, GROQ_API_KEY
+GROQ_MODEL = "qwen/qwen3.6-27b"
+GROQ_FALLBACK = "openai/gpt-oss-20b"
 
 _client = None
 
