@@ -25,6 +25,10 @@ const Icons = {
   arrow:    'M5 12h14M12 5l7 7-7 7',
   chevron:  'M9 18l6-6-6-6',
   dot:      'M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0',
+  home:     'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z M9 22V12h6v10',
+  zap:      'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
+  shield:   'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  star:     'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
 };
 
 // ─── Styles — Apple / macOS aesthetic ────────────────────────────────────────
@@ -303,7 +307,7 @@ const STAGES = [
 
 // ─── Main App ────────────────────────────────────────────────────────────────
 export default function App() {
-  const [activeTab, setActiveTab]   = useState('pipeline');
+  const [activeTab, setActiveTab]   = useState('home');
   const [engineUp, setEngineUp]     = useState(null);
 
   useEffect(() => {
@@ -314,11 +318,11 @@ export default function App() {
   }, []);
 
   const NAV = [
-    { id: 'upload',       label: 'Upload CSV',        icon: Icons.download },
-    { id: 'pipeline',     label: 'Pipeline',          icon: Icons.cpu      },
-    { id: 'catalog',      label: 'Product Catalog',   icon: Icons.table    },
-    { id: 'architecture', label: 'Architecture',      icon: Icons.layers   },
-    { id: 'exports',      label: 'Exports',           icon: Icons.file     },
+    { id: 'home',     label: 'Home',             icon: Icons.home     },
+    { id: 'upload',   label: 'Upload CSV',        icon: Icons.download },
+    { id: 'pipeline', label: 'Pipeline',          icon: Icons.cpu      },
+    { id: 'catalog',  label: 'Product Catalog',   icon: Icons.table    },
+    { id: 'exports',  label: 'Exports',           icon: Icons.file     },
   ];
 
   return (
@@ -360,10 +364,11 @@ export default function App() {
         <div className="main">
           <header className="topbar">
             <span className="topbar-title">
-              {activeTab === 'upload'       ? 'Upload Product Catalog'    :
-               activeTab === 'pipeline'     ? 'Enrichment Pipeline'      :
-               activeTab === 'catalog'      ? 'Product Catalog'          :
-               activeTab === 'architecture' ? 'System Architecture & Data Flow' : 'Exports & Downloads'}
+              <span className="topbar-title">
+              {activeTab === 'home'     ? 'Welcome to UniIntel'         :
+               activeTab === 'upload'   ? 'Upload Product Catalog'    :
+               activeTab === 'pipeline' ? 'Enrichment Pipeline'       :
+               activeTab === 'catalog'  ? 'Product Catalog'           : 'Exports & Downloads'}
             </span>
             <div className="topbar-right">
               <span className="badge badge-violet">UniHack 2026</span>
@@ -372,15 +377,127 @@ export default function App() {
           </header>
 
           <div className="content">
-            {activeTab === 'upload'       && <UploadView       onDone={() => setActiveTab('catalog')} />}
-            {activeTab === 'pipeline'     && <PipelineView />}
-            {activeTab === 'catalog'      && <CatalogView  />}
-            {activeTab === 'architecture' && <ArchitectureView />}
-            {activeTab === 'exports'      && <ExportsView  />}
+            {activeTab === 'home'     && <HomeView     onStart={() => setActiveTab('upload')} />}
+            {activeTab === 'upload'   && <UploadView   onDone={() => setActiveTab('pipeline')} />}
+            {activeTab === 'pipeline' && <PipelineView />}
+            {activeTab === 'catalog'  && <CatalogView  />}
+            {activeTab === 'exports'  && <ExportsView  />}
           </div>
         </div>
       </div>
     </>
+  );
+}
+
+// ─── Home View ───────────────────────────────────────────────────────────────
+function HomeView({ onStart }) {
+  const features = [
+    { icon: Icons.zap,    color: '#0071e3', title: 'Smart LLM Clustering',        desc: '1,000 items → 50 unique clusters → 95% fewer API calls. No rate limits, no wasted cost.' },
+    { icon: Icons.shield, color: '#34c759', title: 'Verifiable Source URLs',       desc: 'Every row gets manufacturer homepage + Grainger, MSC, McMaster & Fastenal search links.' },
+    { icon: Icons.star,   color: '#ff9500', title: '5-Factor Trust Scoring',       desc: 'Weighted quality score (0–100) flags low-confidence rows into a human review queue.' },
+    { icon: Icons.cpu,    color: '#bf5af2', title: '252-Column Unilog Delivery',   desc: 'Outputs exact Unilog delivery format: taxonomy, 50 spec pairs, 5 description formats.' },
+  ];
+
+  const howItWorks = [
+    { num: '01', label: 'Ingest & Clean',       color: '#0071e3' },
+    { num: '02', label: 'Brand Resolve',         color: '#5e5ce6' },
+    { num: '2b', label: 'Source URL Lookup',     color: '#bf5af2' },
+    { num: '03', label: 'AI Taxonomy',           color: '#ff9500' },
+    { num: '04', label: 'Attribute Extraction',  color: '#34c759' },
+    { num: '05', label: 'Descriptions',          color: '#64d2ff' },
+    { num: '06', label: 'Trust Scoring',         color: '#ff3b30' },
+    { num: '07', label: '252-Col CSV Export',    color: '#30b0c7' },
+  ];
+
+  return (
+    <div style={{ maxWidth: 820, margin: '0 auto' }}>
+      {/* ── Hero ── */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(0,113,227,0.06) 0%, rgba(94,92,230,0.06) 100%)',
+        border: '1px solid rgba(0,113,227,0.12)',
+        borderRadius: 16,
+        padding: '36px 40px',
+        marginBottom: 24,
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, background: 'radial-gradient(circle, rgba(0,113,227,0.08) 0%, transparent 70%)', borderRadius: '50%' }} />
+        <div style={{ marginBottom: 16 }}>
+          <span className="badge badge-blue" style={{ marginRight: 8 }}>UniHack 2026</span>
+          <span className="badge badge-violet">Submission UNIH-2435</span>
+        </div>
+        <h1 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.02em', marginBottom: 10 }}>
+          UniIntel — Product AI<br />Enrichment Engine
+        </h1>
+        <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.6, maxWidth: 520, marginBottom: 24 }}>
+          Transforms raw 6-column distributor catalog files into the complete <strong>252-column Unilog Delivery Format</strong> using an 8-stage AI pipeline — with verifiable source URLs and automated quality scoring.
+        </p>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button className="btn btn-primary" onClick={onStart} style={{ fontSize: 13, padding: '10px 20px' }}>
+            <Icon d={Icons.play} size={13} fill="white" stroke="none" /> Start Enrichment
+          </button>
+          <a href="https://github.com/Narayan1006/UniIntel" target="_blank" rel="noreferrer"
+            className="btn btn-ghost" style={{ fontSize: 13, padding: '10px 20px', textDecoration: 'none' }}>
+            <Icon d={Icons.file} size={13} /> GitHub Repo
+          </a>
+        </div>
+      </div>
+
+      {/* ── Stats ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
+        {[
+          { value: '6 → 252', label: 'Columns Enriched', color: '#0071e3' },
+          { value: '95%',     label: 'LLM API Cost Saved via Clustering', color: '#34c759' },
+          { value: '5×',      label: 'Description Formats Generated', color: '#ff9500' },
+        ].map(s => (
+          <div key={s.label} className="metric-card" style={{ textAlign: 'center', padding: '18px 12px' }}>
+            <div style={{ fontSize: 26, fontWeight: 800, color: s.color, marginBottom: 4 }}>{s.value}</div>
+            <div style={{ fontSize: 11, color: 'var(--text2)', fontWeight: 500 }}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── How It Works ── */}
+      <div className="metric-card" style={{ marginBottom: 24 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 14 }}>8-Stage Enrichment Pipeline</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto', paddingBottom: 4 }}>
+          {howItWorks.map((s, i) => (
+            <div key={s.num} style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              <div style={{ textAlign: 'center', minWidth: 80 }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: '50%',
+                  background: `${s.color}18`, border: `2px solid ${s.color}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  margin: '0 auto 4px', fontSize: 11, fontWeight: 800, color: s.color,
+                }}>{s.num}</div>
+                <div style={{ fontSize: 9, color: 'var(--text2)', fontWeight: 600, textAlign: 'center', lineHeight: 1.2 }}>{s.label}</div>
+              </div>
+              {i < howItWorks.length - 1 && (
+                <div style={{ width: 20, height: 1, background: 'var(--border2)', flexShrink: 0, margin: '0 2px', marginBottom: 16 }} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Features ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        {features.map(f => (
+          <div key={f.title} className="metric-card" style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+              background: `${f.color}14`, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Icon d={f.icon} size={16} stroke={f.color} />
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 3 }}>{f.title}</div>
+              <div style={{ fontSize: 11, color: 'var(--text2)', lineHeight: 1.4 }}>{f.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
