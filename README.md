@@ -3,6 +3,10 @@
 
 > **Transforms raw 6-column distributor catalogs into complete, standards-compliant 252-column Unilog Delivery Format records — automatically, at scale, with verifiable source URLs.**
 
+> 🔑 **IMPORTANT NOTE FOR EVALUATORS / JUDGES:**  
+> UniIntel uses **Groq API Cloud (`GROQ_API_KEY`)** for LLM Taxonomy Classification. If running locally or evaluating on large custom CSVs, please set your own `GROQ_API_KEY` in `pipeline/.env` to avoid shared API key rate limits.  
+> `GROQ_API_KEY=your_groq_api_key_here`
+
 ---
 
 ## 🎯 Problem Statement
