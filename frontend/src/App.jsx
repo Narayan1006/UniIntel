@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const ENRICHMENT_API = (import.meta.env.VITE_API_URL || 'https://uniintelunintel-api.onrender.com') + '/api/v1/enrichment';
 
@@ -237,6 +237,7 @@ const css = `
     box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
   }
   .btn-primary-lg:hover { background: var(--primary-h); transform: translateY(-1px); }
+  .btn-primary-lg:disabled { opacity: 0.6; cursor: not-allowed; }
 
   .btn-secondary {
     background: #ffffff;
@@ -449,19 +450,61 @@ function HomeView({ onStart }) {
   );
 }
 
-// ─── UPLOAD VIEW ─────────────────────────────────────────────────────────────
+// ─── REAL CSV UPLOAD VIEW ────────────────────────────────────────────────────
 function UploadView({ onDone }) {
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState('idle'); // idle | uploading | error
+  const [file, setFile] = useState(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const fileInputRef = useRef(null);
 
-  const handleUpload = () => {
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+      setErrorMsg('');
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const dropped = e.dataTransfer.files[0];
+      if (dropped.name.toLowerCase().endsWith('.csv')) {
+        setFile(dropped);
+        setErrorMsg('');
+      } else {
+        setErrorMsg('Please upload a valid .csv file.');
+      }
+    }
+  };
+
+  const handleUploadSubmit = () => {
+    if (!file) {
+      setErrorMsg('Please select a CSV file to upload.');
+      return;
+    }
+
     setStatus('uploading');
-    fetch(`${ENRICHMENT_API}/upload`, { method: 'POST' })
-      .then(r => r.json())
-      .then(() => {
-        setStatus('done');
+    setErrorMsg('');
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch(`${ENRICHMENT_API}/upload`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then(async (r) => {
+        const data = await r.json();
+        if (!r.ok) {
+          throw new Error(data.detail || 'Upload failed.');
+        }
+        setStatus('idle');
         onDone();
       })
-      .catch(() => setStatus('done'));
+      .catch((err) => {
+        setStatus('error');
+        setErrorMsg(err.message || 'Error connecting to backend API.');
+      });
   };
 
   return (
@@ -476,22 +519,64 @@ function UploadView({ onDone }) {
         </div>
         <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Upload Raw Product Catalog</h2>
         <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 24 }}>
-          Upload raw 6-column distributor CSV (Mfg_Part_Num, Part_Desc, Brand fields, Part_Manuf).
+          Upload any 6-column distributor CSV (Mfg_Part_Num, Part_Desc, Brand fields, Part_Manuf).
         </p>
 
-        <div style={{
-          border: '2px dashed var(--border-h)', borderRadius: 12, padding: 30,
-          background: '#fafafa', marginBottom: 24, cursor: 'pointer'
-        }} onClick={handleUpload}>
-          <Icon d={Icons.file} size={30} stroke="var(--text-sub)" style={{ marginBottom: 10 }} />
-          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 4 }}>
-            Click to upload or drag & drop CSV file
-          </div>
-          <div style={{ fontSize: 11, color: 'var(--text-sub)' }}>Default: Unihack Sample Dataset - Input.csv</div>
+        <input
+          type="file"
+          accept=".csv"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
+
+        <div
+          style={{
+            border: file ? '2px solid var(--primary)' : '2px dashed var(--border-h)',
+            borderRadius: 12,
+            padding: 30,
+            background: file ? 'var(--primary-bg)' : '#fafafa',
+            marginBottom: 20,
+            cursor: 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+          onClick={() => fileInputRef.current?.click()}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={handleDrop}
+        >
+          <Icon d={Icons.file} size={32} stroke={file ? 'var(--primary)' : 'var(--text-sub)'} style={{ marginBottom: 10 }} />
+          {file ? (
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--primary)', marginBottom: 4 }}>
+                {file.name}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--text-sub)' }}>
+                {(file.size / 1024).toFixed(1)} KB &bull; Ready for pipeline processing
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 4 }}>
+                Click to browse or drag & drop CSV file
+              </div>
+              <div style={{ fontSize: 11, color: 'var(--text-sub)' }}>Accepts any catalog .csv file</div>
+            </div>
+          )}
         </div>
 
-        <button className="btn-primary-lg" style={{ width: '100%', justifyContent: 'center' }} onClick={handleUpload}>
-          {status === 'uploading' ? 'Processing Upload…' : 'Start Pipeline Run'}
+        {errorMsg && (
+          <div style={{ color: 'var(--red)', fontSize: 12, marginBottom: 16, fontWeight: 600 }}>
+            {errorMsg}
+          </div>
+        )}
+
+        <button
+          className="btn-primary-lg"
+          style={{ width: '100%', justifyContent: 'center' }}
+          onClick={handleUploadSubmit}
+          disabled={status === 'uploading' || !file}
+        >
+          {status === 'uploading' ? 'Uploading & Starting Pipeline…' : 'Start Pipeline Run'}
         </button>
       </div>
     </div>
@@ -500,15 +585,18 @@ function UploadView({ onDone }) {
 
 // ─── PIPELINE VIEW ───────────────────────────────────────────────────────────
 function PipelineView() {
-  const [pipelineState, setPipelineState] = useState({ stage: 3, is_running: true });
+  const [pipelineState, setPipelineState] = useState({ stage: 0, is_running: false });
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const fetchStatus = () => {
       fetch(`${ENRICHMENT_API}/status`)
         .then(r => r.json())
         .then(d => setPipelineState(d))
         .catch(() => {});
-    }, 3000);
+    };
+
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -516,13 +604,20 @@ function PipelineView() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div className="card-surface" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <span className="badge-enterprise badge-primary" style={{ marginBottom: 8 }}>Active Pipeline Executing</span>
+          <span className={`badge-enterprise ${pipelineState.is_running ? 'badge-primary' : 'badge-green'}`} style={{ marginBottom: 8 }}>
+            {pipelineState.is_running ? 'Active Pipeline Running' : 'Pipeline Execution Ready'}
+          </span>
           <h2 style={{ fontSize: 20, fontWeight: 800 }}>Enrichment Execution Engine</h2>
+          {pipelineState.filename && (
+            <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>
+              Active Dataset: <strong>{pipelineState.filename}</strong> ({pipelineState.total_rows} rows)
+            </div>
+          )}
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: 12, color: 'var(--text-sub)' }}>Current Status</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--primary)' }}>
-            {pipelineState.is_running ? 'Running Stage ' + pipelineState.stage : 'Complete'}
+          <div style={{ fontSize: 14, fontWeight: 700, color: pipelineState.is_running ? 'var(--primary)' : 'var(--green)' }}>
+            {pipelineState.is_running ? pipelineState.stage_label || `Running Stage ${pipelineState.stage}` : 'Pipeline Complete'}
           </div>
         </div>
       </div>
@@ -531,12 +626,12 @@ function PipelineView() {
         <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>Stage Progress Tracking</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {STAGES.map(s => {
-            const isDone = pipelineState.stage > s.num || !pipelineState.is_running;
+            const isDone = pipelineState.stage > s.num || (!pipelineState.is_running && pipelineState.stage > 0);
             const isCurr = pipelineState.stage === s.num && pipelineState.is_running;
             return (
               <div key={s.num} style={{
-                background: isCurr ? 'var(--primary-bg)' : '#fafafa',
-                border: isCurr ? '1px solid var(--primary)' : '1px solid var(--border)',
+                background: isCurr ? 'var(--primary-bg)' : isDone ? 'var(--green-bg)' : '#fafafa',
+                border: isCurr ? '1px solid var(--primary)' : isDone ? '1px solid rgba(52,199,89,0.3)' : '1px solid var(--border)',
                 padding: 14, borderRadius: 8
               }}>
                 <div style={{ fontSize: 11, fontWeight: 800, color: isDone ? 'var(--green)' : isCurr ? 'var(--primary)' : 'var(--text-sub)' }}>
@@ -552,16 +647,16 @@ function PipelineView() {
   );
 }
 
-// ─── CATALOG VIEW ────────────────────────────────────────────────────────────
+// ─── REAL DYNAMIC CATALOG VIEW ────────────────────────────────────────────────
 function CatalogView() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${ENRICHMENT_API}/products?page=1&limit=20`)
+    fetch(`${ENRICHMENT_API}/products?page=1&limit=50`)
       .then(r => r.json())
       .then(d => {
-        setProducts(d.items || []);
+        setProducts(d.products || d.items || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -572,7 +667,7 @@ function CatalogView() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h2 style={{ fontSize: 20, fontWeight: 800 }}>Enriched Product Catalog</h2>
-          <p style={{ fontSize: 13, color: 'var(--text-sub)' }}>252-Column Unilog Delivery Schema Preview</p>
+          <p style={{ fontSize: 13, color: 'var(--text-sub)' }}>252-Column Unilog Delivery Schema Live Preview</p>
         </div>
       </div>
 
@@ -594,7 +689,7 @@ function CatalogView() {
             ) : products.length === 0 ? (
               <tr>
                 <td colSpan="6" style={{ textAlign: 'center', padding: 40, color: 'var(--text-sub)' }}>
-                  No enriched data available yet. Please run an enrichment pipeline from the Upload tab.
+                  No enriched data available yet. Please upload a catalog CSV file to start enrichment.
                 </td>
               </tr>
             ) : (
@@ -622,14 +717,14 @@ function CatalogView() {
   );
 }
 
-// ─── EXPORTS VIEW ────────────────────────────────────────────────────────────
+// ─── DYNAMIC EXPORTS VIEW (NO HARDCODED DATA) ─────────────────────────────────
 function ExportsView() {
   return (
     <div style={{ maxWidth: 700, margin: '0 auto' }}>
       <div className="card-surface">
         <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Delivery CSV Exports</h2>
         <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 24 }}>
-          Download enriched CSV outputs ready for catalog ingestion and human QA audit.
+          Download enriched CSV outputs generated directly from the latest pipeline execution.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -639,7 +734,7 @@ function ExportsView() {
               <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Complete enriched dataset ready for catalog import</div>
             </div>
             <a href={`${ENRICHMENT_API}/download/delivery-csv`} download className="btn-primary-lg" style={{ fontSize: 13, padding: '8px 16px', textDecoration: 'none' }}>
-              <Icon d={Icons.download} size={14} /> Download CSV
+              <Icon d={Icons.download} size={14} /> Download Delivery CSV
             </a>
           </div>
 
@@ -649,7 +744,7 @@ function ExportsView() {
               <div style={{ fontSize: 12, color: 'var(--text-sub)', marginTop: 4 }}>Flagged low-confidence rows needing QA review</div>
             </div>
             <a href={`${ENRICHMENT_API}/download/review-queue`} download className="btn-secondary" style={{ fontSize: 13, padding: '8px 16px', textDecoration: 'none' }}>
-              <Icon d={Icons.download} size={14} /> Download Queue
+              <Icon d={Icons.download} size={14} /> Download Review Queue
             </a>
           </div>
         </div>
