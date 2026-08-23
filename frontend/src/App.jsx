@@ -357,126 +357,111 @@ export default function App() {
 function HomeView({ onStart }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-      
-      {/* ── 1. Centered High-Impact Hero ── */}
-      <div style={{ textAlign: 'center', maxWidth: 840, margin: '0 auto', paddingTop: 12 }}>
-        <div style={{ marginBottom: 16 }}>
-          <span className="badge-enterprise badge-primary" style={{ fontSize: 12, padding: '6px 14px' }}>
-            <Icon d={Icons.sparkles} size={13} /> UniHack 2026 Submission &bull; 252-Column Unilog Schema
+
+      {/* ── 1. Hero Section ── */}
+      <div style={{ textAlign: 'center', maxWidth: 780, margin: '0 auto', paddingTop: 12 }}>
+        <div style={{ marginBottom: 18 }}>
+          <span className="badge-enterprise badge-primary" style={{ fontSize: 12, padding: '6px 16px' }}>
+            <Icon d={Icons.sparkles} size={13} /> UniHack 2026 · UNIH-2435 · 252-Column Unilog Schema
           </span>
         </div>
 
         <h1 style={{
-          fontSize: 44, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.15,
-          color: '#0f172a', marginBottom: 20
+          fontSize: 46, fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.12,
+          color: '#0f172a', marginBottom: 18
         }}>
-          Autonomous Product Intelligence & Catalog Enrichment Engine
+          AI-Powered Product<br />Catalog Enrichment Engine
         </h1>
 
-        <p style={{ fontSize: 17, color: 'var(--text-sub)', lineHeight: 1.6, marginBottom: 32, maxWidth: 680, margin: '0 auto 32px' }}>
-          Transforms raw 6-column distributor catalogs into production-ready <strong>252-column Unilog Delivery Schema</strong> files with AI taxonomy, verifiable MFR source links & quality scoring.
+        <p style={{ fontSize: 16, color: 'var(--text-sub)', lineHeight: 1.65, maxWidth: 620, margin: '0 auto 32px' }}>
+          Upload any raw 6-column distributor CSV and get a production-ready
+          {' '}<strong>252-column Unilog Delivery Schema</strong> — with AI taxonomy,
+          verified distributor source links, and per-SKU trust scoring.
         </p>
 
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', alignItems: 'center' }}>
           <button className="btn-primary-lg" onClick={onStart}>
-            <Icon d={Icons.play} size={16} fill="#ffffff" stroke="none" /> Launch Enrichment Pipeline <Icon d={Icons.arrowRight} size={15} />
+            <Icon d={Icons.play} size={16} fill="#ffffff" stroke="none" />
+            Start Enrichment Pipeline
+            <Icon d={Icons.arrowRight} size={15} />
           </button>
-          <a href="https://github.com/Narayan1006/UniIntel" target="_blank" rel="noreferrer" className="btn-secondary" style={{ textDecoration: 'none' }}>
-            <Icon d={Icons.file} size={15} /> GitHub Source Code
+          <a
+            href="https://github.com/Narayan1006/UniIntel"
+            target="_blank" rel="noreferrer"
+            className="btn-secondary"
+            style={{ textDecoration: 'none' }}
+          >
+            <Icon d={Icons.file} size={15} /> GitHub Repo
           </a>
         </div>
       </div>
 
-      {/* ── 2. Interactive App Preview Mockup Window ── */}
-      <div style={{
-        background: '#ffffff',
-        border: '1px solid var(--border)',
-        borderRadius: 20,
-        boxShadow: 'var(--shadow-lg)',
-        overflow: 'hidden',
-      }}>
-        {/* macOS Window Controls Top Header */}
-        <div style={{
-          background: '#f8fafc', borderBottom: '1px solid var(--border)',
-          padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between'
-        }}>
-          <div style={{ display: 'flex', gap: 7 }}>
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ef4444' }} />
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#f59e0b' }} />
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#10b981' }} />
+      {/* ── 2. Key Metrics Row ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        {[
+          { label: 'Schema Expansion', val: '6 → 252', sub: 'columns enriched', color: 'var(--primary)', bg: 'var(--primary-bg)', icon: Icons.zap },
+          { label: 'Classification Accuracy', val: '100%', sub: 'taxonomy precision', color: 'var(--green)', bg: 'var(--green-bg)', icon: Icons.check },
+          { label: 'LLM Cost Reduction', val: '95%', sub: 'via smart clustering', color: 'var(--violet)', bg: 'var(--violet-bg)', icon: Icons.sparkles },
+          { label: 'Source URLs Per SKU', val: '5', sub: 'verifiable links', color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', icon: Icons.external },
+        ].map((m, i) => (
+          <div key={i} className="card-surface" style={{ textAlign: 'center', padding: '24px 16px' }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: 12, background: m.bg,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px'
+            }}>
+              <Icon d={m.icon} size={20} stroke={m.color} />
+            </div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: m.color, letterSpacing: '-0.02em' }}>{m.val}</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text)', marginTop: 2 }}>{m.label}</div>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{m.sub}</div>
           </div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', fontFamily: 'monospace' }}>
-            uniintel-enrichment-pipeline // 252-column-delivery-engine
+        ))}
+      </div>
+
+      {/* ── 3. 8-Stage Pipeline Visualization ── */}
+      <div className="card-surface" style={{ padding: '28px 32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.06em', marginBottom: 4 }}>HOW IT WORKS</div>
+            <h3 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>8-Stage AI Enrichment Pipeline</h3>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--green)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span className="dot-online" /> LIVE ENGINE READY
-          </div>
+          <span className="badge-enterprise badge-green">
+            <Icon d={Icons.check} size={11} /> Fully Automated
+          </span>
         </div>
 
-        {/* Mockup Product Pipeline Status Bar */}
-        <div style={{ padding: 24, background: '#fafafa', borderBottom: '1px solid var(--border)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-            {[
-              { label: 'SCHEMA EXPANSION', val: '6 → 252 Columns', color: 'var(--primary)' },
-              { label: 'CLASSIFICATION ACCURACY', val: '100% Precision', color: 'var(--green)' },
-              { label: 'GROQ LLM CLUSTERING', val: '95% API Cost Saved', color: 'var(--violet)' },
-              { label: 'SOURCE LINK VERIFICATION', val: '5 URLs Per SKU', color: 'var(--primary)' },
-            ].map((st, idx) => (
-              <div key={idx} style={{ background: '#ffffff', border: '1px solid var(--border)', padding: 14, borderRadius: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.05em', marginBottom: 4 }}>{st.label}</div>
-                <div style={{ fontSize: 15, fontWeight: 800, color: st.color }}>{st.val}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Mockup Data Table Preview */}
-        <div style={{ padding: '16px 24px 24px' }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-sub)', marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>ENRICHED OUTPUT SCHEMA SAMPLE (252 COLUMNS)</span>
-            <span className="badge-enterprise badge-green">Validated Unilog Format</span>
-          </div>
-
-          <table style={{ width: '100%', fontSize: 12 }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                <th style={{ padding: '8px 12px' }}>Mfg Part Num</th>
-                <th style={{ padding: '8px 12px' }}>Resolved Brand</th>
-                <th style={{ padding: '8px 12px' }}>Taxonomy Classpath</th>
-                <th style={{ padding: '8px 12px' }}>Invoice Description</th>
-                <th style={{ padding: '8px 12px' }}>Source Verification</th>
-                <th style={{ padding: '8px 12px' }}>Trust Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { mpn: '6002-2RS', brand: 'SKF', tax: 'Bearings > Ball Bearings > Deep Groove', desc: 'SKF 6002-2RS BALL BEARING 15MM', link: 'skf.com/bearing', score: '98%' },
-                { mpn: '8401K11', brand: 'McMaster', tax: 'Raw Materials > Metals > Aluminum', desc: 'ALUMINUM SHEET 6061-T6 1/4 IN', link: 'mcmaster.com/8401k11', score: '96%' },
-                { mpn: '35N28', brand: 'Grainger', tax: 'Motors > AC Motors > Single Phase', desc: 'GRAINGER AC MOTOR 1/2HP 1725RPM', link: 'grainger.com/35n28', score: '95%' },
-              ].map((row, i) => (
-                <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontWeight: 700 }}>{row.mpn}</td>
-                  <td style={{ padding: '10px 12px' }}><span className="badge-enterprise badge-primary">{row.brand}</span></td>
-                  <td style={{ padding: '10px 12px', color: 'var(--text-sub)' }}>{row.tax}</td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'monospace' }}>{row.desc}</td>
-                  <td style={{ padding: '10px 12px', color: 'var(--primary)' }}>{row.link}</td>
-                  <td style={{ padding: '10px 12px' }}><span className="badge-enterprise badge-green">{row.score}</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          {[
+            { n: '01', label: 'Ingest & Clean', desc: 'Parse CSV, normalize MPNs', color: 'var(--primary)' },
+            { n: '02', label: 'Brand Resolve', desc: 'Fuzzy-match manufacturer DB', color: 'var(--primary)' },
+            { n: '03', label: 'Source URLs', desc: 'Distributor link generation', color: 'var(--primary)' },
+            { n: '04', label: 'AI Classify', desc: 'Groq LLM taxonomy classpath', color: 'var(--violet)' },
+            { n: '05', label: 'Attr Extraction', desc: 'Regex dimension parsing', color: 'var(--violet)' },
+            { n: '06', label: '5× Descriptions', desc: 'Short, long, SEO, bullet, tech', color: 'var(--violet)' },
+            { n: '07', label: 'Trust Scoring', desc: '5-factor confidence 0–100', color: 'var(--green)' },
+            { n: '08', label: 'Export CSV', desc: '252-column Unilog schema', color: 'var(--green)' },
+          ].map((s, i) => (
+            <div key={i} style={{
+              background: '#fafafa', border: '1px solid var(--border)', borderRadius: 10, padding: 14,
+              borderLeft: `3px solid ${s.color}`,
+            }}>
+              <div style={{ fontSize: 10, fontWeight: 800, color: s.color, letterSpacing: '0.05em', marginBottom: 4 }}>STAGE {s.n}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 3 }}>{s.label}</div>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{s.desc}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* ── 3. High-Impact Visual Feature Cards ── */}
+      {/* ── 4. Feature Cards ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
         <div className="card-surface">
           <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--primary-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
             <Icon d={Icons.zap} size={22} stroke="var(--primary)" />
           </div>
-          <h3 style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>Smart LLM Clustering</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>Smart LLM Clustering</h3>
           <p style={{ fontSize: 13, color: 'var(--text-sub)', lineHeight: 1.5 }}>
-            Clusters 1,000 SKUs into 50 unique product types. Saves 95% LLM API calls with zero rate limits.
+            Groups 1,000+ SKUs into unique product types. Makes just 2–3 API calls instead of 1,000 — saving 95% on LLM costs.
           </p>
         </div>
 
@@ -484,9 +469,9 @@ function HomeView({ onStart }) {
           <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--green-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
             <Icon d={Icons.shield} size={22} stroke="var(--green)" />
           </div>
-          <h3 style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>Verifiable Source Links</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>Verifiable Source Links</h3>
           <p style={{ fontSize: 13, color: 'var(--text-sub)', lineHeight: 1.5 }}>
-            Attaches MFR homepage URLs + 4 distributor search endpoints (Grainger, MSC, McMaster, Fastenal).
+            Every SKU gets MFR homepage + 4 distributor search links (Grainger, MSC, McMaster-Carr, Fastenal) — all clickable.
           </p>
         </div>
 
@@ -494,9 +479,9 @@ function HomeView({ onStart }) {
           <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--violet-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
             <Icon d={Icons.star} size={22} stroke="var(--violet)" />
           </div>
-          <h3 style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>5-Factor Trust Scoring</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 800, marginBottom: 6 }}>5-Factor Trust Score</h3>
           <p style={{ fontSize: 13, color: 'var(--text-sub)', lineHeight: 1.5 }}>
-            Weighted quality score (0–100) per row automatically routing low-confidence items to Human QA Review.
+            Weighted 0–100 quality score per row — automatically flags low-confidence items to Human QA Review queue.
           </p>
         </div>
       </div>
