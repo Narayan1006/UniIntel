@@ -11,28 +11,17 @@ const Icon = ({ d, size = 16, stroke = 'currentColor', fill = 'none', style = {}
 
 const Icons = {
   logo:     'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
-  grid:     'M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z',
   cpu:      'M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18',
-  check:    'M20 6L9 17l-5-5',
-  alert:    'M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01',
   download: 'M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3',
   play:     'M5 3l14 9-14 9V3z',
-  refresh:  'M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15',
-  tag:      'M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z M7 7h.01',
-  layers:   'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
   table:    'M3 3h18v18H3zM3 9h18M3 15h18M9 3v18',
   file:     'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6',
-  arrow:    'M5 12h14M12 5l7 7-7 7',
-  chevron:  'M9 18l6-6-6-6',
-  dot:      'M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0',
-  home:     'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z M9 22V12h6v10',
-  zap:      'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
-  shield:   'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
-  star:     'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
   external: 'M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3',
+  check:    'M20 6L9 17l-5-5',
+  alert:    'M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01',
 };
 
-// ─── Apple / macOS Light Theme Styles (Top Nav Layout) ──────────────────────
+// ─── Apple / B2B SaaS Light Theme Styles ─────────────────────────────────────
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -40,27 +29,21 @@ const css = `
 
   :root {
     --bg:        #f5f5f7;
-    --bg2:       #ffffff;
-    --bg3:       #f0f0f2;
     --border:    rgba(0, 0, 0, 0.08);
     --border-h:  rgba(0, 0, 0, 0.16);
     --shadow:    0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
     --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03);
     --text:      #1d1d1f;
     --text-sub:  #6e6e73;
-    --text-muted:#aeaeb2;
     --primary:   #0071e3;
     --primary-h: #0077ed;
     --primary-bg:rgba(0, 113, 227, 0.08);
     --green:     #34c759;
     --green-bg:  rgba(52, 199, 89, 0.10);
     --red:       #ff3b30;
-    --red-bg:    rgba(255, 59, 48, 0.10);
     --amber:     #ff9500;
-    --amber-bg:  rgba(255, 149, 0, 0.10);
     --violet:    #5e5ce6;
     --violet-bg: rgba(94, 92, 230, 0.10);
-    --radius:    12px;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
@@ -78,7 +61,7 @@ const css = `
     min-height: 100vh;
   }
 
-  /* ── Apple Top Navigation Bar ── */
+  /* ── B2B Operational Top Header ── */
   .topnav {
     position: sticky;
     top: 0;
@@ -140,7 +123,7 @@ const css = `
   .nav-tab-btn {
     background: transparent;
     border: none;
-    padding: 7px 15px;
+    padding: 7px 16px;
     border-radius: 7px;
     font-family: var(--font-sans);
     font-size: 13px;
@@ -196,7 +179,6 @@ const css = `
     padding: 32px 24px;
   }
 
-  /* ── Apple Light Cards & Badges ── */
   .card-surface {
     background: #ffffff;
     border: 1px solid var(--border);
@@ -217,8 +199,6 @@ const css = `
   }
   .badge-primary { background: var(--primary-bg); color: var(--primary); border: 1px solid rgba(0, 113, 227, 0.2); }
   .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(52, 199, 89, 0.2); }
-  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(255, 149, 0, 0.2); }
-  .badge-violet { background: var(--violet-bg); color: var(--violet); border: 1px solid rgba(94, 92, 230, 0.2); }
 
   .btn-primary-lg {
     background: var(--primary);
@@ -254,7 +234,7 @@ const css = `
     transition: all 0.2s ease;
     box-shadow: var(--shadow);
   }
-  .btn-secondary:hover { background: var(--bg3); }
+  .btn-secondary:hover { background: #f0f0f2; }
 
   /* ── Light Table & Data Styles ── */
   .table-container {
@@ -293,9 +273,9 @@ const STAGES = [
   { num: 8, name: 'Export CSV'           },
 ];
 
-// ─── MAIN APP COMPONENT ───────────────────────────────────────────────────────
+// ─── MAIN APP COMPONENT (STARTS DIRECTLY ON UPLOAD WORKSPACE) ─────────────────
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('upload');
   const [engineUp, setEngineUp]   = useState(null);
 
   useEffect(() => {
@@ -306,11 +286,10 @@ export default function App() {
   }, []);
 
   const NAV_ITEMS = [
-    { id: 'home',     label: 'Home',             icon: Icons.home     },
     { id: 'upload',   label: 'Upload Catalog',   icon: Icons.download },
     { id: 'pipeline', label: 'AI Pipeline',      icon: Icons.cpu      },
     { id: 'catalog',  label: 'Product Catalog',  icon: Icons.table    },
-    { id: 'exports',  label: 'Exports',          icon: Icons.file     },
+    { id: 'exports',  label: 'Delivery Exports', icon: Icons.file     },
   ];
 
   return (
@@ -318,7 +297,7 @@ export default function App() {
       <style>{css}</style>
       <div className="app-wrapper">
         
-        {/* ── Top Navigation Bar ── */}
+        {/* ── B2B SaaS Top Header ── */}
         <header className="topnav">
           <div className="brand-group">
             <div className="brand-logo-box">
@@ -327,7 +306,7 @@ export default function App() {
             <div>
               <div className="brand-title">UniIntel</div>
             </div>
-            <span className="brand-tag">Product AI Engine</span>
+            <span className="brand-tag">252-Column Unilog Engine</span>
           </div>
 
           <nav className="nav-tabs">
@@ -353,9 +332,8 @@ export default function App() {
           </div>
         </header>
 
-        {/* ── Main Work Area ── */}
+        {/* ── Main Operational Content Area ── */}
         <main className="main-content">
-          {activeTab === 'home'     && <HomeView     onStart={() => setActiveTab('upload')} />}
           {activeTab === 'upload'   && <UploadView   onDone={() => setActiveTab('pipeline')} />}
           {activeTab === 'pipeline' && <PipelineView />}
           {activeTab === 'catalog'  && <CatalogView  />}
@@ -372,85 +350,7 @@ export default function App() {
   );
 }
 
-// ─── HOME VIEW (APPLE LIGHT HERO) ─────────────────────────────────────────────
-function HomeView({ onStart }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-      {/* Hero Banner */}
-      <div className="card-surface" style={{
-        background: 'linear-gradient(135deg, rgba(0,113,227,0.05) 0%, rgba(94,92,230,0.05) 100%)',
-        border: '1px solid rgba(0,113,227,0.15)',
-        padding: '40px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{ maxWidth: 720 }}>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
-            <span className="badge-enterprise badge-primary">UniHack 2026 Official</span>
-            <span className="badge-enterprise badge-violet">Submission UNIH-2435</span>
-          </div>
-          <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: 14 }}>
-            Autonomous Product Catalog Intelligence & Data Enrichment Engine
-          </h1>
-          <p style={{ fontSize: 15, color: 'var(--text-sub)', lineHeight: 1.6, marginBottom: 24 }}>
-            Transform raw 6-column distributor catalogs into production-ready <strong>252-column Unilog Delivery Format</strong> files. Powered by Groq Qwen 27B LLM reasoning, RapidFuzz canonical matching, and 5-factor quality audit scoring.
-          </p>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button className="btn-primary-lg" onClick={onStart}>
-              <Icon d={Icons.play} size={15} fill="#ffffff" stroke="none" /> Launch Enrichment Pipeline
-            </button>
-            <a href="https://github.com/Narayan1006/UniIntel" target="_blank" rel="noreferrer" className="btn-secondary" style={{ textDecoration: 'none' }}>
-              <Icon d={Icons.file} size={15} /> Documentation & Code
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Metrics Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-        {[
-          { label: 'SCHEMA EXPANSION', val: '6 → 252', sub: 'Exact Unilog Delivery Columns' },
-          { label: 'GROUND TRUTH ACCURACY', val: '100%', sub: 'Verified Field Precision' },
-          { label: 'LLM CLUSTERING EFFICIENCY', val: '95%', sub: 'API Cost & Latency Savings' },
-          { label: 'SOURCE VERIFICATION', val: '5 URLs', sub: 'MFR + 4 Major Distributor Links' },
-        ].map(m => (
-          <div key={m.label} className="card-surface" style={{ padding: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-sub)', letterSpacing: '0.05em', marginBottom: 6 }}>{m.label}</div>
-            <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--primary)', marginBottom: 4 }}>{m.val}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-sub)' }}>{m.sub}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Pipeline Architecture Row */}
-      <div className="card-surface">
-        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Icon d={Icons.cpu} size={18} stroke="var(--primary)" /> 8-Stage Autonomous Pipeline Architecture
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
-          {[
-            { num: '01', title: 'Data Ingestion', desc: 'Auto UTF-8 cleaning, N/A stripping, and MPN deduplication.' },
-            { num: '02', title: 'Brand Resolution', desc: 'RapidFuzz matching against canonical manufacturer dictionary.' },
-            { num: '03', title: 'Source Verification', desc: 'MFR homepage mapping + Grainger/MSC/McMaster/Fastenal URLs.' },
-            { num: '04', title: 'AI Classification', desc: 'Groq Qwen 27B LLM clustering for Dept > Class > Fine taxonomy.' },
-            { num: '05', title: 'Attribute Extraction', desc: 'Extracts up to 50 key/value pairs with UOM standardisation.' },
-            { num: '06', title: 'Description Engine', desc: 'Generates Invoice (≤40 CAPS), Mobile, Short, Long & Retail formats.' },
-            { num: '07', title: 'Trust Scoring', desc: '5-factor quality score automatically creating review queue.' },
-            { num: '08', title: 'Delivery Export', desc: 'Outputs ready-to-ingest 252-column Unilog CSV.' },
-          ].map(s => (
-            <div key={s.num} style={{ background: '#fafafa', border: '1px solid var(--border)', padding: 14, borderRadius: 10 }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--primary)', marginBottom: 4 }}>STAGE {s.num}</div>
-              <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{s.title}</div>
-              <div style={{ fontSize: 12, color: 'var(--text-sub)', lineHeight: 1.4 }}>{s.desc}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── REAL CSV UPLOAD VIEW (AUTO REDIRECT TO PIPELINE) ────────────────────────
+// ─── OPERATIONAL UPLOAD VIEW (DIRECT APP ENTRY POINT) ─────────────────────────
 function UploadView({ onDone }) {
   const [status, setStatus] = useState('idle');
   const [file, setFile] = useState(null);
@@ -499,7 +399,7 @@ function UploadView({ onDone }) {
           throw new Error(data.detail || 'Upload failed.');
         }
         setStatus('idle');
-        onDone(); // Automatically redirects directly to AI Pipeline stage tab!
+        onDone(); // Redirects directly to AI Pipeline status page
       })
       .catch((err) => {
         setStatus('error');
@@ -508,18 +408,35 @@ function UploadView({ onDone }) {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: '40px auto' }}>
-      <div className="card-surface" style={{ textAlign: 'center', padding: 36 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* Top B2B Operational Metrics Summary Bar */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        {[
+          { label: 'DELIVERY SCHEMA', val: '6 → 252', sub: 'Unilog Format Columns' },
+          { label: 'ACCURACY GUARANTEE', val: '100%', sub: 'Field Ground Truth Precision' },
+          { label: 'LLM EFFICIENCY', val: '95%', sub: 'API Cost & Rate Limit Savings' },
+          { label: 'SOURCE VERIFICATION', val: '5 URLs', sub: 'MFR + 4 Distributor Search Links' },
+        ].map(m => (
+          <div key={m.label} className="card-surface" style={{ padding: 18 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-sub)', letterSpacing: '0.05em', marginBottom: 4 }}>{m.label}</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: 'var(--primary)', marginBottom: 2 }}>{m.val}</div>
+            <div style={{ fontSize: 11, color: 'var(--text-sub)' }}>{m.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Primary CSV Upload Card */}
+      <div className="card-surface" style={{ maxWidth: 680, width: '100%', margin: '0 auto', textAlign: 'center', padding: 36 }}>
         <div style={{
-          width: 52, height: 52, borderRadius: 14, background: 'var(--primary-bg)',
+          width: 48, height: 48, borderRadius: 12, background: 'var(--primary-bg)',
           border: '1px solid rgba(0, 113, 227, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 18px'
+          margin: '0 auto 16px'
         }}>
           <Icon d={Icons.download} size={22} stroke="var(--primary)" />
         </div>
-        <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>Upload Raw Product Catalog</h2>
+        <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 6 }}>Upload Raw Product Catalog</h2>
         <p style={{ fontSize: 13, color: 'var(--text-sub)', marginBottom: 24 }}>
-          Upload any 6-column distributor CSV (Mfg_Part_Num, Part_Desc, Brand fields, Part_Manuf).
+          Upload raw 6-column distributor CSV (Mfg_Part_Num, Part_Desc, Brand fields, Part_Manuf).
         </p>
 
         <input
@@ -534,7 +451,7 @@ function UploadView({ onDone }) {
           style={{
             border: file ? '2px solid var(--primary)' : '2px dashed var(--border-h)',
             borderRadius: 12,
-            padding: 30,
+            padding: 32,
             background: file ? 'var(--primary-bg)' : '#fafafa',
             marginBottom: 20,
             cursor: 'pointer',
@@ -559,7 +476,7 @@ function UploadView({ onDone }) {
               <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 4 }}>
                 Click to browse or drag & drop CSV file
               </div>
-              <div style={{ fontSize: 11, color: 'var(--text-sub)' }}>Accepts any catalog .csv file</div>
+              <div style={{ fontSize: 11, color: 'var(--text-sub)' }}>Accepts any raw distributor catalog .csv file</div>
             </div>
           )}
         </div>
@@ -576,7 +493,7 @@ function UploadView({ onDone }) {
           onClick={handleUploadSubmit}
           disabled={status === 'uploading' || !file}
         >
-          {status === 'uploading' ? 'Uploading & Starting Pipeline…' : 'Start Pipeline Run'}
+          {status === 'uploading' ? 'Uploading & Starting Pipeline…' : 'Start Enrichment Pipeline'}
         </button>
       </div>
     </div>
@@ -647,7 +564,7 @@ function PipelineView() {
   );
 }
 
-// ─── REAL DYNAMIC CATALOG VIEW ────────────────────────────────────────────────
+// ─── CATALOG VIEW ────────────────────────────────────────────────────────────
 function CatalogView() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -717,7 +634,7 @@ function CatalogView() {
   );
 }
 
-// ─── DYNAMIC EXPORTS VIEW (EMPTY STATE WHEN NO FILE READY) ─────────────────────
+// ─── EXPORTS VIEW ────────────────────────────────────────────────────────────
 function ExportsView() {
   const [hasOutput, setHasOutput] = useState(false);
   const [loading, setLoading] = useState(true);
