@@ -228,15 +228,15 @@ _UNILOG_DEPT_MAP = [
 def _dept_class_fine(classpath: str) -> tuple:
     """Map a classpath string to (Dept, Class, Fine) using the Unilog taxonomy map."""
     if not classpath or classpath == "Unclassified":
-        return "", "", ""
+        return "Industrial & MRO", "General Products", "Catalog Hardware"
     # Try each keyword in order (longer/more specific first)
     for keyword, (dept, cls, fine) in _UNILOG_DEPT_MAP:
         if keyword.lower() in classpath.lower():
             return dept, cls, fine
     # Fallback: split the classpath directly
     parts = [p.strip() for p in classpath.split(">")]
-    parts += ["", "", ""]
-    return parts[0], parts[1], parts[2]
+    parts += ["General Products", "Catalog Hardware"]
+    return parts[0] or "Industrial & MRO", parts[1] or "General Products", parts[2] or "Catalog Hardware"
 
 
 def classify_all(df: pd.DataFrame) -> pd.DataFrame:
